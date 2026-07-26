@@ -1572,10 +1572,58 @@ body {
   .clock-num { font-size: 2.4rem; }
 }
 
+/* Cake Candle Smoke Puff Effect */
+.smoke-puff {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  background: rgba(220, 200, 220, 0.75);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: floatSmoke 1.8s ease-out forwards;
+}
+
+@keyframes floatSmoke {
+  0% {
+    opacity: 0.8;
+    transform: translateY(0) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-40px) translateX(calc((var(--random-x) - 0.5) * 40px)) scale(1.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) translateX(calc((var(--random-x) - 0.5) * 80px)) scale(2.4);
+  }
+}
+
+/* Mouse & Caffeine Sparkle Dot Effect */
+.sparkle-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, var(--accent-gold) 0%, var(--accent-rose) 100%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 10px var(--accent-gold);
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
 /* Mobile Devices (max-width: 600px) */
 @media (max-width: 600px) {
   html, body { overflow-x: hidden; width: 100%; }
   .app-container { padding: 12px; }
+
+  /* 3D Banter Memory Flashcards Mobile */
+  .flashcard-carousel-container { gap: 8px; }
+  .flashcard-nav-btn { width: 36px; height: 36px; font-size: 0.95rem; flex-shrink: 0; }
+  .flashcards-track-wrapper { min-height: 260px; }
+  .flashcard-3d-box { height: 260px; }
+  .flashcard-front, .flashcard-back { padding: 18px 16px; }
+  .flash-quote { font-size: 0.92rem; }
 
   /* Top Control Bar & Badges Drawer */
   .top-control-bar { top: 12px; right: 12px; gap: 8px; }

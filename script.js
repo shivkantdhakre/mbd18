@@ -227,6 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
         t += n.d + 0.05;
       } catch (e) {}
     });
+  }
+
   // Ambient Lo-Fi & Rain Sound Synthesizer for Top Control Bar
   const musicToggleBtn = document.getElementById('musicToggleBtn');
   let isAmbientPlaying = false;
