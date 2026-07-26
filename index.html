@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Mohima! 👑✨</title>
+  <meta name="description" content="Happy 18th Birthday to Mohima - The 700-Year-Old Skeleton Princess & Dark Romance Queen!">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Background Animated Canvas -->
+  <canvas id="canvas-bg"></canvas>
+
+  <!-- Top Control Bar (Audio & Particle Presets) -->
+  <div class="top-control-bar">
+    <button class="control-btn" id="presetBtn" title="Switch Particles (Rain / Stars / Petals)">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </button>
+    <button class="control-btn" id="musicToggleBtn" title="Toggle Ambient Rain / Lo-Fi Music">
+      <i class="fa-solid fa-volume-high"></i>
+    </button>
+  </div>
+
+  <div class="app-container">
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-subtitle-tag">
+        <i class="fa-solid fa-crown"></i> FOR THE 700-YEAR-OLD SKELETON PRINCESS
+      </div>
+      
+      <h1 class="hero-title">Happy 18th Birthday, Mohima! ✨</h1>
+      
+      <p class="hero-tagline">
+        To my favorite Wattpad dark-romance lover girl, A-Levels survivor, and men-hater club executive. Welcome to your 700th birthday vault! 🥀📖
+      </p>
+
+      <!-- Stats Counter Bar -->
+      <div class="stats-counter-bar">
+        <div class="stat-item">
+          <i class="fa-solid fa-comments" style="color: var(--accent-rose);"></i>
+          <span><strong>48,640+</strong> Messages Exchanged</span>
+        </div>
+        <div class="stat-item">
+          <i class="fa-solid fa-earth-asia" style="color: var(--accent-gold);"></i>
+          <span><strong>India ✈️ Bangladesh</strong> Connected</span>
+        </div>
+        <div class="stat-item">
+          <i class="fa-solid fa-book-bookmark" style="color: var(--accent-purple);"></i>
+          <span><strong>700 Yrs</strong> of Pure Banter</span>
+        </div>
+      </div>
+
+      <!-- Glowing Interactive Birthday Cake -->
+      <div class="cake-container" id="cakeContainer" title="Click to blow out candles!">
+        <div class="candles-group">
+          <div class="candle"><div class="flame" id="flame1"></div></div>
+          <div class="candle"><div class="flame" id="flame2"></div></div>
+          <div class="candle"><div class="flame" id="flame3"></div></div>
+        </div>
+        <div class="cake-layer cake-layer-top"><div class="icing"></div></div>
+        <div class="cake-layer cake-layer-middle"><div class="icing"></div></div>
+        <div class="cake-layer cake-layer-bottom"><div class="icing"></div></div>
+      </div>
+      <p class="cake-instruction" id="cakeStatus"><i class="fa-solid fa-wand-magic-sparkles"></i> Click the cake to blow out your 18th candles!</p>
+
+      <!-- Hero Call-to-Action Buttons -->
+      <div class="hero-cta-group" style="margin-top: 30px;">
+        <button class="btn-primary" id="openLetterBtn">
+          <i class="fa-solid fa-envelope-open-text"></i> Open Vedant's Letter 💌
+        </button>
+        <button class="btn-secondary" id="unboxGiftBtn">
+          <i class="fa-solid fa-gift"></i> Unbox Birthday Gift 🎁
+        </button>
+      </div>
+    </section>
+
+    <!-- SECTION 1: 3D INTERACTIVE BOOKSHELF ("MOHIMA'S READING NOOK") -->
+    <section>
+      <div class="section-title-wrapper">
+        <p class="section-tag"><i class="fa-solid fa-book-skull"></i> DARK ACADEMIA 3D BOOKSHELF</p>
+        <h2 class="section-heading">Mohima's 700-Year-Old Reading Nook 📚</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Click on any 3D book spine to pull it off the shelf and read Vedant's secret handwritten notes!</p>
+      </div>
+
+      <div class="bookshelf-container">
+        <div class="shelf-row">
+          <!-- Book 1 -->
+          <div class="book-spine book-1" id="bookSpine1">
+            <div class="ribbon-tag"></div>
+            <span class="spine-title">ZADE MEADOWS' PLAYBOOK</span>
+          </div>
+          <!-- Book 2 -->
+          <div class="book-spine book-2" id="bookSpine2">
+            <div class="ribbon-tag" style="background: #a0c4ff;"></div>
+            <span class="spine-title">A-LEVELS PHYSICS SURVIVAL</span>
+          </div>
+          <!-- Book 3 -->
+          <div class="book-spine book-3" id="bookSpine3">
+            <div class="ribbon-tag"></div>
+            <span class="spine-title">700 YRS SKELETON GRIMOIRE</span>
+          </div>
+          <!-- Book 4 -->
+          <div class="book-spine book-4" id="bookSpine4">
+            <div class="ribbon-tag" style="background: #7ce6b8;"></div>
+            <span class="spine-title">HOSTEL JUNGLE MANUAL</span>
+          </div>
+          <!-- Book 5 -->
+          <div class="book-spine book-5" id="bookSpine5">
+            <div class="ribbon-tag" style="background: var(--accent-rose);"></div>
+            <span class="spine-title">CHRISTIAN HARPER'S RULES</span>
+          </div>
+          <!-- Book 6 -->
+          <div class="book-spine book-6" id="bookSpine6">
+            <div class="ribbon-tag" style="background: #c77dff;"></div>
+            <span class="spine-title">CAT MEMES & 3 AM REELS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: INSTAGRAM DM SOUNDBOARD VAULT -->
+    <section>
+      <div class="section-title-wrapper">
+        <p class="section-tag"><i class="fa-brands fa-instagram"></i> THE INSTAGRAM DM VAULT</p>
+        <h2 class="section-heading">DMs Between India & Bangladesh 💬</h2>
+      </div>
+
+      <div class="dm-vault-card">
+        <div class="dm-header">
+          <div class="dm-avatar"><i class="fa-solid fa-ghost"></i></div>
+          <div>
+            <h4 style="color: var(--text-main); font-size: 1.1rem;">Viöla_Odessǣ & All Fiction</h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-circle" style="color: #2bb379; font-size: 0.6rem;"></i> Active 700 Years Ago</p>
+          </div>
+        </div>
+
+        <div class="dm-chat-body">
+          <div class="chat-bubble mohima">
+            Listen to my voice note 🙈 Also I'm not studying Rotational Motion today! 😭
+            <div class="audio-wave-box" id="voiceNoteTrigger">
+              <i class="fa-solid fa-circle-play" style="color: var(--accent-rose); font-size: 1.2rem;"></i>
+              <div class="wave-bars" id="waveBars">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+              </div>
+              <span style="font-size: 0.85rem; color: var(--text-main); margin-left: 8px;">Hindi Voice Note (0:14)</span>
+            </div>
+          </div>
+
+          <div class="chat-bubble vedant">
+            Ur accent is cute but ngl ur hindi voice is even cuter 🤌 Ab zyaada sharmaao mat jaao padhayi karo, nhi toh hostel mess main bartan dhona padhegha 😂
+          </div>
+
+          <div class="chat-bubble mohima">
+            Respect your elders! I have a 700-year-old dead soul 😤
+          </div>
+
+          <div class="chat-bubble vedant">
+            700 saal purane ho naa esliye 17 ki umar main dadi ammi jesi baate karti ho 🥱 As ur wish 700 yrs old skeleton Princess 😂
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: 700TH BIRTHDAY QUEST (QUIZ MINI-GAME) -->
+    <section>
+      <div class="section-title-wrapper">
+        <p class="section-tag"><i class="fa-solid fa-gamepad"></i> INTERACTIVE MINI-GAME</p>
+        <h2 class="section-heading">The 700th Birthday Quest 🏆</h2>
+      </div>
+
+      <div class="quiz-card">
+        <p style="color: var(--accent-rose); font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 10px;" id="quizProgress">QUESTION 1 OF 3</p>
+        <h3 class="quiz-question-title" id="quizQuestion">What is the main delicacy served in Vedant's Boys' Hostel Mess?</h3>
+
+        <div class="quiz-options-grid" id="quizOptions">
+          <button class="quiz-opt-btn" data-index="0">A) Dhoodh aur Kele (Banana & Milk) 🍌</button>
+          <button class="quiz-opt-btn" data-index="1">B) Five-Star Gourmet Steak 🥩</button>
+          <button class="quiz-opt-btn" data-index="2">C) Fresh Mango Cupcakes 🧁</button>
+          <button class="quiz-opt-btn" data-index="3">D) Cold Coffee & Pizza 🍕</button>
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--text-muted); display: none;" id="quizFeedback"></p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: DARK ROMANCE TROPE & FORTUNE WHEEL -->
+    <section>
+      <div class="fortune-section-card">
+        <p class="section-tag"><i class="fa-solid fa-dharmachakra"></i> 700TH BIRTHDAY FORTUNE WHEEL</p>
+        <h2 class="section-heading" style="color: var(--accent-gold); margin-bottom: 15px;">What Is Your Birthday Wattpad Fate Today? 🎡</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 20px;">
+          Click the button below to generate your official 18th Birthday Wattpad Romance Trope & Cat Meme Fortune!
+        </p>
+
+        <div class="spin-box">
+          <div class="spin-result-text" id="fortuneResult">
+            🔮 <em>Click "Generate Birthday Fortune" to reveal your trope!</em>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="spinFortuneBtn" style="margin: 0 auto;">
+          <i class="fa-solid fa-dice"></i> Generate Birthday Fortune ✨
+        </button>
+      </div>
+    </section>
+
+    <!-- SECTION 5: DIGITAL CLONE PERSONAL GPT PORTAL CARD -->
+    <section id="digital-clone-section">
+      <div class="digital-clone-card">
+        <div class="gpt-badge-title">
+          <i class="fa-solid fa-robot"></i> 24/7 PERSONAL DIGITAL TWIN
+        </div>
+        <h2 class="clone-card-heading">Talk to Vedant's Digital Twin 🤖💬</h2>
+        <p class="clone-card-desc">
+          Whenever you miss me, when it's late at night in Bangladesh, or when A-Levels physics gets too annoying... click below to chat with my 24/7 sarcastic, teasing, and romantic AI twin!
+        </p>
+
+        <!-- Quick Conversation Starter Chips -->
+        <div class="prompt-chips-group">
+          <button class="prompt-chip" data-prompt="I miss you Vedant 🙈">"I miss you Vedant 🙈"</button>
+          <button class="prompt-chip" data-prompt="I don't wanna study today 😭">"I don't wanna study today 😭"</button>
+          <button class="prompt-chip" data-prompt="Zade Meadows is better than you 😌">"Zade Meadows is better than you 😌"</button>
+          <button class="prompt-chip" data-prompt="Tell me a sarcastic joke 😂">"Tell me a sarcastic joke 😂"</button>
+        </div>
+
+        <a href="https://chatgpt.com/g/g-6a661f5e6c8481919422e7b592c9427f-vedant-singh" target="_blank" rel="noopener noreferrer" class="btn-gpt-launch">
+          <i class="fa-solid fa-paper-plane"></i> Chat With Digital Vedant Now ✨
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- DUAL-PAGE OPEN VINTAGE BOOK READER MODAL -->
+  <div class="modal-overlay" id="bookModal">
+    <div class="open-book-modal-box">
+      <button class="close-modal-btn" id="closeBookBtn" style="color: #3b1429; background: rgba(0,0,0,0.06);">&times;</button>
+      <div class="open-book-container">
+        
+        <!-- LEFT PAGE -->
+        <div class="book-page-left">
+          <div>
+            <p class="page-chapter-tag" id="bookModalTag">CHAPTER I • ANNOTATION</p>
+            <h3 class="page-book-title" id="bookModalTitle">Book Title</h3>
+            <div class="page-quote-box" id="bookModalQuote">
+              "Original Chat Quote Here..."
+            </div>
+          </div>
+          <div style="font-family: var(--font-serif); font-size: 0.75rem; color: #8b3a62; letter-spacing: 1px;">
+            ✦ 700-YEAR-OLD SKELETON ARCHIVES ✦
+          </div>
+        </div>
+
+        <!-- RIGHT PAGE -->
+        <div class="book-page-right">
+          <div>
+            <h4 class="vedant-commentary-title"><i class="fa-solid fa-feather"></i> Vedant's Handwritten Notes:</h4>
+            <p class="vedant-handwritten-text" id="bookModalContent">
+              Vedant's Hinglish commentary text...
+            </p>
+          </div>
+          <div class="page-footer-stamp">
+            — Annotated by Knight of the Little Princess 🛡️✨
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ REWARD BADGE MODAL -->
+  <div class="modal-overlay" id="quizRewardModal">
+    <div class="letter-modal-box" style="text-align: center; border-color: var(--accent-gold);">
+      <button class="close-modal-btn" id="closeQuizRewardBtn">&times;</button>
+      <div style="font-size: 4.5rem; margin-bottom: 15px;">👑🏆</div>
+      <h3 style="font-family: var(--font-serif); color: var(--accent-gold); font-size: 2rem; margin-bottom: 15px;">Quest Completed! 100% Score!</h3>
+      <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-main); margin-bottom: 25px;">
+        You have officially earned the <strong>"Crown of the 700-Year-Old Skeleton Princess"</strong>! You know our banter better than anyone in the world 💖
+      </p>
+      <div style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--accent-rose);">
+        Badge Issued by Vedant Singh (Knight of the Little Princess) 🛡️✨
+      </div>
+    </div>
+  </div>
+
+  <!-- BIRTHDAY LETTER MODAL (VEDANT'S LETTER) -->
+  <div class="modal-overlay" id="letterModal">
+    <div class="letter-modal-box">
+      <button class="close-modal-btn" id="closeLetterBtn">&times;</button>
+      <div class="letter-header">
+        <p style="color: var(--accent-rose); font-size: 0.85rem; letter-spacing: 2px;">FROM VEDANT (ALL FICTION)</p>
+        <h3 class="letter-sender">To My Favorite 700-Yr Old Skeleton Princess 👑</h3>
+      </div>
+      <div class="letter-body" id="letterText">
+Accha 🙂
+
+Happy 18th Birthday to my favorite 17-year-old (well, officially 18 now!) dark-romance lover girl, menu-hater, and A-Levels survivor Mohima! 🥳✨
+
+700 saal purani aatma ho aap, toh 18 saal toh kuch bhi nhi hai aapke liye 🥱 Kabutar se letter bhejti thi 700 saal pehle, aur ab Instagram par full-day dark academia reels aur cat memes bhejti ho 😂
+
+Mujhe pta hai Rotational Motion aur Chemistry padh padh kar dimaag kharab ho rha hai, par thodha aur padh lo mohtarma, nhi toh mere saath boys hostel ke mess main bartan dhona padhegha 😅
+
+Jokes apart... ur accent is cute, but ngl ur hindi voice is even cuter 🤌 I know I tease you constantly about Zade Meadows, Christian Harper, staying up for 2 weeks straight reading smut, and living in the Gangs of Wasseypur of Bangladesh... but honestly, y r my favorite mess, and I'm all yours 😚
+
+Happy Birthday my pretty princess! Make sure to take your beauty sleep today and don't drink 4 cups of black coffee in one go 🖤
+
+— Yours, Vedant (Knight of the Little Princess) 💅
+      </div>
+    </div>
+  </div>
+
+  <!-- SECRET GIFT UNBOXING MODAL -->
+  <div class="modal-overlay" id="giftModal">
+    <div class="letter-modal-box" style="text-align: center; border-color: var(--accent-gold);">
+      <button class="close-modal-btn" id="closeGiftBtn">&times;</button>
+      <div style="font-size: 4rem; margin-bottom: 15px;">🎁✨</div>
+      <h3 style="font-family: var(--font-serif); color: var(--accent-gold); font-size: 2rem; margin-bottom: 15px;">You Unboxed Your Birthday Secret! 💖</h3>
+      <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-main); margin-bottom: 25px;">
+        "I will die in your arms, my blood all over your pretty lips, perfect shade of red which suits y, in a red dress... Such a romantic death. Happy 18th Birthday, my cute little princess!" 🥀👑
+      </p>
+      <div style="font-family: var(--font-handwriting); font-size: 2rem; color: var(--accent-rose);">
+        Forever Yours, Vedant 💕
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
