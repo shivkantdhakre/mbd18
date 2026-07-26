@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const bookData = {
     bookSpine1: {
-      title: "Zade Meadows' Playbook 🖤",
+      title: "Aaron Warner's Rules 🖤",
       tag: "CHAPTER I • DARK ROMANCE",
       quote: `"Ek hi hai men hater, books lover, novel reader, crush on fictional characters waali ladki 🙂 *slow claps*"`,
       content: "Mohima has spent over 200 hours reading smut & dark romance novels without sleep!\n\nPreferred Trope: Enemies to lovers, possessive stalker heroes, and dramatic rain scenes in Dhaka."
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const vedantResponses = [
     { keywords: ['miss', 'missing'], response: "Awww miss me already? 🙈 Jaao pehle Rotational Motion complete karo, fir text karna! 💅" },
     { keywords: ['rotational', 'physics', 'study', 'exam', 'hate'], response: "Padhayi nhi karoghe toh hostel ke mess main mere saath bartan dhona padhegha 😅 Jaao physics padho mohtarma!" },
-    { keywords: ['zade', 'christian', 'smut', 'romance', 'book'], response: "Zade Meadows fictional hai, main real hun 🤌 Stop overthinking and go get your beauty sleep!" },
+    { keywords: ['aaron', 'warner', 'zade', 'christian', 'smut', 'romance', 'book'], response: "Aaron Warner fictional hai, main real hun 🤌 Stop overthinking and go get your beauty sleep!" },
     { keywords: ['birthday', '18', 'happy'], response: "Happy 18th Birthday my pretty princess! 🥳✨ Make sure not to drink 4 cups of black coffee in one go today! 🖤" },
     { keywords: ['700', 'skeleton', 'soul', 'old'], response: "700 saal purani skeleton princess ho aap, esliye 17 ki umar main dadi ammi jesi baate karti ho 🥱" },
     { keywords: ['cute', 'accent', 'voice'], response: "Ur accent is cute but ngl ur hindi voice is even cuter 🤌 Ab zyaada sharmaao mat!" }
@@ -671,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const spinFortuneBtn = document.getElementById('spinFortuneBtn');
 
   const fortunes = [
-    "🥀 <strong>Trope: Enemies to Lovers</strong> — Zade Meadows inspects your A-Levels Physics notes and commands you to stop overthinking and go sleep!",
+    "🥀 <strong>Trope: Enemies to Lovers</strong> — Aaron Warner inspects your A-Levels Physics notes and commands you to stop overthinking and go sleep!",
     "👑 <strong>Trope: Mafia Princess</strong> — You are officially crowned Supreme Executive of the Bangladesh Men-Hater Club & Dark Academia Society!",
     "☕ <strong>Trope: Fake Dating / Banter</strong> — Vedant buys you 4 cups of extra-strong black coffee and 10 fuzzy kittens for your 700th birthday!",
     "🦇 <strong>Trope: Reincarnated Vampire</strong> — Your 700-year-old soul receives a lifetime supply of dark romance paperbacks and rainy weather!",
@@ -694,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 11. LIVE BIRTHDAY TICKING COUNTER (JULY 27 - BANGLADESH TIME UTC+6)
+  // 11. LIVE BIRTHDAY TICKING COUNTER (JULY 27 - INDIAN TIME UTC+5:30)
   // --------------------------------------------------------------------------
   const clockDays = document.getElementById('clockDays');
   const clockHours = document.getElementById('clockHours');
@@ -702,12 +702,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const clockSeconds = document.getElementById('clockSeconds');
   const clockTitle = document.getElementById('clockTitle');
 
-  // July 27 00:00:00 Bangladesh Standard Time (UTC+6)
-  const bangladeshBirthday = new Date('2026-07-27T00:00:00+06:00');
+  // July 27 00:00:00 Indian Standard Time (UTC+5:30)
+  const indianBirthday = new Date('2026-07-27T00:00:00+05:30');
 
   function updateLiveClock() {
     const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - bangladeshBirthday.getTime()) / 1000);
+    const diffInSeconds = Math.floor((now.getTime() - indianBirthday.getTime()) / 1000);
 
     const isCountdown = diffInSeconds < 0;
     const absDiff = Math.abs(diffInSeconds);
@@ -724,9 +724,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (clockTitle) {
       if (isCountdown) {
-        clockTitle.innerText = "Countdown to Mohima's 18th Birthday (Dhaka Time 🇧🇩) ⏳";
+        clockTitle.innerText = "Countdown to Mohima's 18th Birthday (India Time 🇮🇳) ⏳";
       } else {
-        clockTitle.innerText = "Time Since Mohima Turned 18 (Dhaka Time 🇧🇩) ✨";
+        clockTitle.innerText = "Time Since Mohima Turned 18 (India Time 🇮🇳) ✨";
       }
     }
   }
@@ -868,6 +868,25 @@ document.addEventListener('DOMContentLoaded', () => {
       musicToggleBtn.classList.remove('playing');
       audioPlaying = false;
     }
+  });
+
+  // --------------------------------------------------------------------------
+  // 15. DIGITAL TWIN PROMPT CHIPS COPY & LAUNCH HANDLER
+  // --------------------------------------------------------------------------
+  const promptChips = document.querySelectorAll('.prompt-chip');
+  const gptUrl = 'https://chatgpt.com/g/g-6a661f5e6c8481919422e7b592c9427f-vedant-singh';
+
+  promptChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      playPopSound();
+      const textToCopy = chip.getAttribute('data-prompt');
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        alert(`Prompt copied: "${textToCopy}"!\nOpening Vedant's Digital Twin...`);
+        window.open(gptUrl, '_blank');
+      }).catch(() => {
+        window.open(gptUrl, '_blank');
+      });
+    });
   });
 
 });
