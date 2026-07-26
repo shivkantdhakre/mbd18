@@ -6,6 +6,14 @@
   <title>Happy Birthday Mohima! 👑✨</title>
   <meta name="description" content="Happy 18th Birthday to Mohima - The 700-Year-Old Skeleton Princess & Dark Romance Queen!">
   
+  <!-- Open Graph & Social Sharing Meta Tags -->
+  <meta property="og:title" content="Happy 18th Birthday, Mohima! 👑✨">
+  <meta property="og:description" content="Welcome to the 700-Year-Old Skeleton Princess Vault & Dark Academia Romance Archive. Created with love by Vedant!">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#120716">
+
   <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="index.css">
   
@@ -17,14 +25,70 @@
   <!-- Background Animated Canvas -->
   <canvas id="canvas-bg"></canvas>
 
-  <!-- Top Control Bar (Audio & Particle Presets) -->
+  <!-- Top Control Bar (Audio, Presets, Achievements) -->
   <div class="top-control-bar">
+    <button class="control-btn" id="badgeToggleBtn" title="Collectible Achievements & Badges">
+      <i class="fa-solid fa-award"></i>
+      <span class="badge-count-pill" id="badgeCountPill">0</span>
+    </button>
     <button class="control-btn" id="presetBtn" title="Switch Particles (Rain / Stars / Petals)">
       <i class="fa-solid fa-wand-magic-sparkles"></i>
     </button>
-    <button class="control-btn" id="musicToggleBtn" title="Toggle Ambient Rain / Lo-Fi Music">
+    <button class="control-btn" id="musicToggleBtn" title="Toggle Ambient Rain / Lo-Fi Music Synth">
       <i class="fa-solid fa-volume-high"></i>
     </button>
+  </div>
+
+  <!-- Collectible Badges Drawer -->
+  <div class="badges-drawer" id="badgesDrawer">
+    <div class="badges-header">
+      <h4><i class="fa-solid fa-crown" style="color: var(--accent-gold);"></i> Princess Achievements</h4>
+      <button class="close-drawer-btn" id="closeBadgesBtn">&times;</button>
+    </div>
+    <div class="badges-grid" id="badgesGrid">
+      <div class="badge-item locked" id="badge1" data-title="700-Year-Old Legend" data-desc="Visited Mohima's 18th Birthday Vault!">
+        <div class="badge-icon">👑</div>
+        <div class="badge-info">
+          <h5>700-Year-Old Soul</h5>
+          <p>Visited Vault</p>
+        </div>
+      </div>
+      <div class="badge-item locked" id="badge2" data-title="Candle Master" data-desc="Extinguished the 18th birthday cake candles!">
+        <div class="badge-icon">🕯️</div>
+        <div class="badge-info">
+          <h5>Candle Master</h5>
+          <p>Extinguished Candles</p>
+        </div>
+      </div>
+      <div class="badge-item locked" id="badge3" data-title="Dark Romance Scholar" data-desc="Opened all book spines on the shelf!">
+        <div class="badge-icon">📚</div>
+        <div class="badge-info">
+          <h5>Dark Romance Scholar</h5>
+          <p>Read All Books</p>
+        </div>
+      </div>
+      <div class="badge-item locked" id="badge4" data-title="Quest Champion" data-desc="Scored 100% on the 700th Birthday Quiz!">
+        <div class="badge-icon">🏆</div>
+        <div class="badge-info">
+          <h5>Quest Champion</h5>
+          <p>100% Quiz Score</p>
+        </div>
+      </div>
+      <div class="badge-item locked" id="badge5" data-title="Digital Twin Confidante" data-desc="Chatted with Digital Vedant in Live DM!">
+        <div class="badge-icon">💬</div>
+        <div class="badge-info">
+          <h5>Chat Confidante</h5>
+          <p>Live DM Conversation</p>
+        </div>
+      </div>
+      <div class="badge-item locked" id="badge6" data-title="Easter Egg Hunter" data-desc="Discovered a secret keyboard code!">
+        <div class="badge-icon">🔮</div>
+        <div class="badge-info">
+          <h5>Easter Egg Hunter</h5>
+          <p>Secret Code Unlocked</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="app-container">
@@ -38,7 +102,7 @@
       <h1 class="hero-title">Happy 18th Birthday, Mohima! ✨</h1>
       
       <p class="hero-tagline">
-        To my favorite Wattpad dark-romance lover girl, A-Levels survivor, and men-hater club executive. Welcome to your 700th birthday vault! 🥀📖
+        To my favorite Wattpad dark-romance lover girl, A-Levels survivor, and men-hater club executive. Welcome to your official 700th birthday vault! 🥀📖
       </p>
 
       <!-- Stats Counter Bar -->
@@ -86,11 +150,11 @@
       <div class="section-title-wrapper">
         <p class="section-tag"><i class="fa-solid fa-book-skull"></i> DARK ACADEMIA 3D BOOKSHELF</p>
         <h2 class="section-heading">Mohima's 700-Year-Old Reading Nook 📚</h2>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Click on any 3D book spine to pull it off the shelf and read Vedant's secret handwritten notes!</p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Click on any 3D book spine to pull it off the shelf and read Vedant's handwritten notes!</p>
       </div>
 
       <div class="bookshelf-container">
-        <div class="shelf-row">
+        <div class="shelf-row" id="shelfRow">
           <!-- Book 1 -->
           <div class="book-spine book-1" id="bookSpine1">
             <div class="ribbon-tag"></div>
@@ -121,39 +185,45 @@
             <div class="ribbon-tag" style="background: #c77dff;"></div>
             <span class="spine-title">CAT MEMES & 3 AM REELS</span>
           </div>
+          <!-- Secret Book 7 (Locked) -->
+          <div class="book-spine book-secret locked" id="bookSpineSecret" title="Unlock by scoring 100% on the Quiz or entering secret key '18'!">
+            <div class="ribbon-tag" style="background: var(--accent-gold);"></div>
+            <span class="spine-title">🔒 SECRET 18TH CHAPTER</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 2: INSTAGRAM DM SOUNDBOARD VAULT -->
+    <!-- SECTION 2: LIVE INSTAGRAM DM CHAT SIMULATOR -->
     <section>
       <div class="section-title-wrapper">
-        <p class="section-tag"><i class="fa-brands fa-instagram"></i> THE INSTAGRAM DM VAULT</p>
-        <h2 class="section-heading">DMs Between India & Bangladesh 💬</h2>
+        <p class="section-tag"><i class="fa-brands fa-instagram"></i> LIVE INSTAGRAM DM SIMULATOR</p>
+        <h2 class="section-heading">Direct Chat With Digital Vedant 💬</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Type a message or click a prompt to text Vedant right here on the website!</p>
       </div>
 
       <div class="dm-vault-card">
+        <!-- IG DM Header -->
         <div class="dm-header">
-          <div class="dm-avatar"><i class="fa-solid fa-ghost"></i></div>
-          <div>
-            <h4 style="color: var(--text-main); font-size: 1.1rem;">Viöla_Odessǣ & All Fiction</h4>
-            <p style="color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-circle" style="color: #2bb379; font-size: 0.6rem;"></i> Active 700 Years Ago</p>
+          <div class="dm-avatar-box">
+            <div class="dm-avatar"><i class="fa-solid fa-ghost"></i></div>
+            <span class="online-indicator"></span>
           </div>
+          <div class="dm-user-details">
+            <h4 style="color: var(--text-main); font-size: 1.1rem;">Viöla_Odessǣ & All Fiction</h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem;" id="chatStatusText">
+              <i class="fa-solid fa-circle" style="color: #2bb379; font-size: 0.6rem;"></i> Active Now • India ↔ Bangladesh
+            </p>
+          </div>
+          <button class="dm-action-btn" id="voiceNoteTrigger" title="Play Voice Note Audio">
+            <i class="fa-solid fa-circle-play"></i> <span>Hindi Voice Note (0:14)</span>
+          </button>
         </div>
 
-        <div class="dm-chat-body">
+        <!-- IG DM Chat Message Stream -->
+        <div class="dm-chat-body" id="dmChatBody">
           <div class="chat-bubble mohima">
             Listen to my voice note 🙈 Also I'm not studying Rotational Motion today! 😭
-            <div class="audio-wave-box" id="voiceNoteTrigger">
-              <i class="fa-solid fa-circle-play" style="color: var(--accent-rose); font-size: 1.2rem;"></i>
-              <div class="wave-bars" id="waveBars">
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-                <div class="wave-bar"></div>
-              </div>
-              <span style="font-size: 0.85rem; color: var(--text-main); margin-left: 8px;">Hindi Voice Note (0:14)</span>
-            </div>
           </div>
 
           <div class="chat-bubble vedant">
@@ -168,10 +238,79 @@
             700 saal purane ho naa esliye 17 ki umar main dadi ammi jesi baate karti ho 🥱 As ur wish 700 yrs old skeleton Princess 😂
           </div>
         </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator-bar" id="typingIndicator" style="display: none;">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span>Vedant is typing...</span>
+        </div>
+
+        <!-- Interactive Quick Prompt Chips -->
+        <div class="chat-starter-chips">
+          <button class="starter-chip" data-msg="I miss you Vedant 🙈">"I miss you 🙈"</button>
+          <button class="starter-chip" data-msg="I hate Rotational Motion 😭">"I hate Physics 😭"</button>
+          <button class="starter-chip" data-msg="Zade Meadows is way better than you 😌">"Zade > You 😌"</button>
+          <button class="starter-chip" data-msg="Happy 18th Birthday to me! 🎉">"Happy 18th to me! 🎉"</button>
+        </div>
+
+        <!-- Interactive Input Form -->
+        <form class="dm-input-form" id="dmInputForm">
+          <input type="text" id="dmInputField" class="dm-text-input" placeholder="Message All Fiction (Vedant)..." autocomplete="off">
+          <button type="submit" class="dm-send-btn" id="dmSendBtn">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
       </div>
     </section>
 
-    <!-- SECTION 3: 700TH BIRTHDAY QUEST (QUIZ MINI-GAME) -->
+    <!-- SECTION 3: 3D VINTAGE POLAROID MEMORY SCRAPBOOK -->
+    <section>
+      <div class="section-title-wrapper">
+        <p class="section-tag"><i class="fa-solid fa-camera-retro"></i> VINTAGE MEMORY VAULT</p>
+        <h2 class="section-heading">Mohima's 18th Polaroid Gallery 📸</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Click on any polaroid photo to open the full handwritten memory note!</p>
+      </div>
+
+      <div class="polaroid-grid">
+        <!-- Polaroid 1 -->
+        <div class="polaroid-card polaroid-1" data-title="Dhaka Rainy Night 🌧️" data-note="3 AM rain, black coffee, and late-night dark romance reels exchanged across the border. Pure aesthetic bliss." data-img="https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=600&q=80">
+          <div class="tape-pin"></div>
+          <div class="polaroid-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=600&q=80" alt="Rain Aesthetic">
+          </div>
+          <p class="polaroid-caption">Dhaka Rainy Nights 🌧️</p>
+        </div>
+
+        <!-- Polaroid 2 -->
+        <div class="polaroid-card polaroid-2" data-title="Dark Academia Novel Stack 📖" data-note="Over 200+ hours spent reading smut & dark romance novels when A-Levels Physics exams were literally 2 days away! 😭" data-img="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80">
+          <div class="tape-pin"></div>
+          <div class="polaroid-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80" alt="Dark Academia Books">
+          </div>
+          <p class="polaroid-caption">Dark Academia Stack 📖</p>
+        </div>
+
+        <!-- Polaroid 3 -->
+        <div class="polaroid-card polaroid-3" data-title="Hostel Mess Banana & Milk 🍌" data-note="Vedant's legendary gourmet dinner at 5th-semester engineering hostel mess: 2 bananas, milk, and 3 AM cockroach dodging." data-img="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80">
+          <div class="tape-pin"></div>
+          <div class="polaroid-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80" alt="Hostel Food Bananas">
+          </div>
+          <p class="polaroid-caption">Hostel Mess Gourmet 🍌</p>
+        </div>
+
+        <!-- Polaroid 4 -->
+        <div class="polaroid-card polaroid-4" data-title="The 700-Year-Old Crown 👑" data-note="Official crown of the skeleton princess! Claiming to have a 700-year-old soul who sent love letters via carrier pigeons." data-img="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80">
+          <div class="tape-pin"></div>
+          <div class="polaroid-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80" alt="Princess Crown">
+          </div>
+          <p class="polaroid-caption">The 700-Yr Crown 👑</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: 700TH BIRTHDAY QUEST (QUIZ MINI-GAME) -->
     <section>
       <div class="section-title-wrapper">
         <p class="section-tag"><i class="fa-solid fa-gamepad"></i> INTERACTIVE MINI-GAME</p>
@@ -193,7 +332,7 @@
       </div>
     </section>
 
-    <!-- SECTION 4: DARK ROMANCE TROPE & FORTUNE WHEEL -->
+    <!-- SECTION 5: DARK ROMANCE TROPE & FORTUNE WHEEL -->
     <section>
       <div class="fortune-section-card">
         <p class="section-tag"><i class="fa-solid fa-dharmachakra"></i> 700TH BIRTHDAY FORTUNE WHEEL</p>
@@ -214,13 +353,61 @@
       </div>
     </section>
 
-    <!-- SECTION 5: DIGITAL CLONE PERSONAL GPT PORTAL CARD -->
+    <!-- SECTION 6: LIVE BIRTHDAY MEMORY TICKING CLOCK & BANTER ANALYTICS -->
+    <section>
+      <div class="section-title-wrapper">
+        <p class="section-tag"><i class="fa-solid fa-clock"></i> LIVE MEMORY TICKING COUNTER</p>
+        <h2 class="section-heading">Time Since Mohima Turned 18 ⏳</h2>
+      </div>
+
+      <div class="live-clock-container">
+        <div class="clock-unit">
+          <span class="clock-num" id="clockDays">00</span>
+          <span class="clock-label">DAYS</span>
+        </div>
+        <div class="clock-colon">:</div>
+        <div class="clock-unit">
+          <span class="clock-num" id="clockHours">00</span>
+          <span class="clock-label">HOURS</span>
+        </div>
+        <div class="clock-colon">:</div>
+        <div class="clock-unit">
+          <span class="clock-num" id="clockMinutes">00</span>
+          <span class="clock-label">MINUTES</span>
+        </div>
+        <div class="clock-colon">:</div>
+        <div class="clock-unit">
+          <span class="clock-num" id="clockSeconds">00</span>
+          <span class="clock-label">SECONDS</span>
+        </div>
+      </div>
+
+      <div class="analytics-card-grid" style="margin-top: 30px;">
+        <div class="analytic-card">
+          <div class="analytic-icon"><i class="fa-solid fa-heart" style="color: var(--accent-rose);"></i></div>
+          <h4>Top Emoji Exchanged</h4>
+          <p class="analytic-highlight">👑 🥀 😭 🙈 🤌</p>
+        </div>
+        <div class="analytic-card">
+          <div class="analytic-icon"><i class="fa-solid fa-fire" style="color: var(--accent-gold);"></i></div>
+          <h4>Top Teasing Topic</h4>
+          <p class="analytic-highlight">Rotational Motion & Zade Meadows</p>
+        </div>
+        <div class="analytic-card">
+          <div class="analytic-icon"><i class="fa-solid fa-mug-hot" style="color: var(--accent-purple);"></i></div>
+          <h4>Coffee Consumed</h4>
+          <p class="analytic-highlight">412+ Cups of Black Coffee</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: DIGITAL CLONE PERSONAL GPT PORTAL CARD -->
     <section id="digital-clone-section">
       <div class="digital-clone-card">
         <div class="gpt-badge-title">
           <i class="fa-solid fa-robot"></i> 24/7 PERSONAL DIGITAL TWIN
         </div>
-        <h2 class="clone-card-heading">Talk to Vedant's Digital Twin 🤖💬</h2>
+        <h2 class="clone-card-heading">Talk to Vedant's Custom GPT 🤖💬</h2>
         <p class="clone-card-desc">
           Whenever you miss me, when it's late at night in Bangladesh, or when A-Levels physics gets too annoying... click below to chat with my 24/7 sarcastic, teasing, and romantic AI twin!
         </p>
@@ -234,7 +421,7 @@
         </div>
 
         <a href="https://chatgpt.com/g/g-6a661f5e6c8481919422e7b592c9427f-vedant-singh" target="_blank" rel="noopener noreferrer" class="btn-gpt-launch">
-          <i class="fa-solid fa-paper-plane"></i> Chat With Digital Vedant Now ✨
+          <i class="fa-solid fa-paper-plane"></i> Launch Custom ChatGPT Model ✨
         </a>
       </div>
     </section>
@@ -278,6 +465,31 @@
     </div>
   </div>
 
+  <!-- POLAROID LIGHTBOX MODAL -->
+  <div class="modal-overlay" id="polaroidModal">
+    <div class="polaroid-modal-box">
+      <button class="close-modal-btn" id="closePolaroidBtn">&times;</button>
+      <img id="polaroidModalImg" src="" alt="Polaroid Full View" style="width: 100%; max-height: 380px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;">
+      <h3 id="polaroidModalTitle" style="font-family: var(--font-serif); color: var(--accent-gold); font-size: 1.8rem; margin-bottom: 10px;">Title</h3>
+      <p id="polaroidModalNote" style="color: var(--text-main); font-size: 1.1rem; line-height: 1.6;">Note text...</p>
+    </div>
+  </div>
+
+  <!-- SECRET EASTER EGG MODAL -->
+  <div class="modal-overlay" id="easterEggModal">
+    <div class="letter-modal-box" style="text-align: center; border-color: var(--accent-gold);">
+      <button class="close-modal-btn" id="closeEasterEggBtn">&times;</button>
+      <div style="font-size: 4.5rem; margin-bottom: 15px;">🔮✨</div>
+      <h3 style="font-family: var(--font-serif); color: var(--accent-gold); font-size: 2rem; margin-bottom: 15px;">You Unlocked Secret Key '18'!</h3>
+      <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-main); margin-bottom: 25px;">
+        "700 years ago, pigeon letters took 3 weeks to cross borders. Today, 48,640+ messages travel at the speed of light. Happy 18th Birthday Mohima, you are my favorite miracle." 👑💖
+      </p>
+      <div style="font-family: var(--font-handwriting); font-size: 2rem; color: var(--accent-rose);">
+        — Knight of the Little Princess 🛡️✨
+      </div>
+    </div>
+  </div>
+
   <!-- QUIZ REWARD BADGE MODAL -->
   <div class="modal-overlay" id="quizRewardModal">
     <div class="letter-modal-box" style="text-align: center; border-color: var(--accent-gold);">
@@ -285,7 +497,7 @@
       <div style="font-size: 4.5rem; margin-bottom: 15px;">👑🏆</div>
       <h3 style="font-family: var(--font-serif); color: var(--accent-gold); font-size: 2rem; margin-bottom: 15px;">Quest Completed! 100% Score!</h3>
       <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-main); margin-bottom: 25px;">
-        You have officially earned the <strong>"Crown of the 700-Year-Old Skeleton Princess"</strong>! You know our banter better than anyone in the world 💖
+        You have officially earned the <strong>"Crown of the 700-Year-Old Skeleton Princess"</strong> and unlocked the <strong>Secret 18th Chapter</strong> on the 3D Bookshelf! 💖
       </p>
       <div style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--accent-rose);">
         Badge Issued by Vedant Singh (Knight of the Little Princess) 🛡️✨

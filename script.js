@@ -1,10 +1,140 @@
 /* ==========================================================================
-   HAPPY BIRTHDAY MOHIMA - ADVANCED INTERACTIVE JAVASCRIPT ENGINE
+   HAPPY BIRTHDAY MOHIMA - ADVANCED INTERACTIVE ENGINE & WEB AUDIO SYNTH
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // 1. MOUSE TRAILING SPARKLE EFFECT
+  // --------------------------------------------------------------------------
+  // 1. WEB AUDIO API SYNTHESIZER FOR SOUND EFFECTS (SFX)
+  // --------------------------------------------------------------------------
+  let sfxCtx = null;
+
+  function initSfxContext() {
+    if (!sfxCtx) {
+      sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (sfxCtx.state === 'suspended') {
+      sfxCtx.resume();
+    }
+  }
+
+  function playPopSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    try {
+      const osc = sfxCtx.createOscillator();
+      const gain = sfxCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, sfxCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(800, sfxCtx.currentTime + 0.08);
+
+      gain.gain.setValueAtTime(0.1, sfxCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.08);
+
+      osc.connect(gain);
+      gain.connect(sfxCtx.destination);
+      osc.start();
+      osc.stop(sfxCtx.currentTime + 0.08);
+    } catch (e) {}
+  }
+
+  function playBookSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    try {
+      const osc = sfxCtx.createOscillator();
+      const gain = sfxCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(220, sfxCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(110, sfxCtx.currentTime + 0.18);
+
+      gain.gain.setValueAtTime(0.12, sfxCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.18);
+
+      osc.connect(gain);
+      gain.connect(sfxCtx.destination);
+      osc.start();
+      osc.stop(sfxCtx.currentTime + 0.18);
+    } catch (e) {}
+  }
+
+  function playChimeSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    const freqs = [523.25, 659.25, 783.99, 1046.50];
+    freqs.forEach((f, idx) => {
+      try {
+        const osc = sfxCtx.createOscillator();
+        const gain = sfxCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, sfxCtx.currentTime + idx * 0.08);
+        gain.gain.setValueAtTime(0.1, sfxCtx.currentTime + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + idx * 0.08 + 0.4);
+
+        osc.connect(gain);
+        gain.connect(sfxCtx.destination);
+        osc.start(sfxCtx.currentTime + idx * 0.08);
+        osc.stop(sfxCtx.currentTime + idx * 0.08 + 0.4);
+      } catch (e) {}
+    });
+  }
+
+  function playFanfareSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+    notes.forEach((f, idx) => {
+      try {
+        const osc = sfxCtx.createOscillator();
+        const gain = sfxCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, sfxCtx.currentTime + idx * 0.1);
+        gain.gain.setValueAtTime(0.15, sfxCtx.currentTime + idx * 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + idx * 0.1 + 0.5);
+
+        osc.connect(gain);
+        gain.connect(sfxCtx.destination);
+        osc.start(sfxCtx.currentTime + idx * 0.1);
+        osc.stop(sfxCtx.currentTime + idx * 0.1 + 0.5);
+      } catch (e) {}
+    });
+  }
+
+  function playVoiceNoteAudio() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    // Synthetic romantic melody sequence simulating voice note audio
+    const melody = [
+      { f: 349.23, d: 0.2 }, { f: 392.00, d: 0.2 }, { f: 440.00, d: 0.4 },
+      { f: 523.25, d: 0.3 }, { f: 440.00, d: 0.3 }, { f: 392.00, d: 0.5 },
+      { f: 349.23, d: 0.4 }, { f: 293.66, d: 0.6 }
+    ];
+
+    let t = sfxCtx.currentTime;
+    melody.forEach(n => {
+      try {
+        const osc = sfxCtx.createOscillator();
+        const gain = sfxCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(n.f, t);
+
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.exponentialRampToValueAtTime(0.12, t + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + n.d);
+
+        osc.connect(gain);
+        gain.connect(sfxCtx.destination);
+
+        osc.start(t);
+        osc.stop(t + n.d);
+        t += n.d + 0.05;
+      } catch (e) {}
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // 2. MOUSE TRAILING SPARKLE EFFECT
+  // --------------------------------------------------------------------------
   document.addEventListener('mousemove', (e) => {
     if (Math.random() < 0.25) {
       const sparkle = document.createElement('div');
@@ -22,7 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 2. MULTI-PRESET CANVAS PARTICLE RENDERER (RAIN, STARS, PETALS)
+  // --------------------------------------------------------------------------
+  // 3. MULTI-PRESET CANVAS PARTICLE RENDERER (RAIN, STARS, PETALS)
+  // --------------------------------------------------------------------------
   const canvas = document.getElementById('canvas-bg');
   const ctx = canvas.getContext('2d');
   let width = canvas.width = window.innerWidth;
@@ -38,9 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const particleCount = 80;
 
   class Particle {
-    constructor() {
-      this.reset();
-    }
+    constructor() { this.reset(); }
 
     reset() {
       this.x = Math.random() * width;
@@ -110,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const presetBtn = document.getElementById('presetBtn');
   presetBtn.addEventListener('click', () => {
+    playPopSound();
     if (currentPreset === 'stars') currentPreset = 'rain';
     else if (currentPreset === 'rain') currentPreset = 'petals';
     else currentPreset = 'stars';
@@ -117,23 +248,52 @@ document.addEventListener('DOMContentLoaded', () => {
     particles.forEach(p => p.reset());
   });
 
-  // 3. DIGITAL CLONE GPT PROMPT CHIPS
-  const promptChips = document.querySelectorAll('.prompt-chip');
-  const gptUrl = 'https://chatgpt.com/g/g-6a661f5e6c8481919422e7b592c9427f-vedant-singh';
+  // --------------------------------------------------------------------------
+  // 4. ACHIEVEMENTS & BADGES SYSTEM
+  // --------------------------------------------------------------------------
+  const badgeToggleBtn = document.getElementById('badgeToggleBtn');
+  const badgesDrawer = document.getElementById('badgesDrawer');
+  const closeBadgesBtn = document.getElementById('closeBadgesBtn');
+  const badgeCountPill = document.getElementById('badgeCountPill');
 
-  promptChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      const textToCopy = chip.getAttribute('data-prompt');
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        alert(`Prompt copied: "${textToCopy}"!\nOpening Vedant's Digital Twin...`);
-        window.open(gptUrl, '_blank');
-      }).catch(() => {
-        window.open(gptUrl, '_blank');
-      });
+  const unlockedBadges = new Set(JSON.parse(localStorage.getItem('mohima_unlocked_badges') || '["badge1"]'));
+
+  function updateBadgesUI() {
+    let count = 0;
+    unlockedBadges.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('locked');
+        el.classList.add('unlocked');
+        count++;
+      }
     });
+    if (badgeCountPill) badgeCountPill.innerText = count;
+    localStorage.setItem('mohima_unlocked_badges', JSON.stringify(Array.from(unlockedBadges)));
+  }
+
+  function unlockBadge(id) {
+    if (!unlockedBadges.has(id)) {
+      unlockedBadges.add(id);
+      updateBadgesUI();
+      playChimeSound();
+    }
+  }
+
+  updateBadgesUI();
+
+  badgeToggleBtn.addEventListener('click', () => {
+    playPopSound();
+    badgesDrawer.classList.toggle('active');
   });
 
-  // 4. BIRTHDAY CAKE CANDLE BLOWOUT ENGINE & SMOKE PUFF ANIMATION
+  closeBadgesBtn.addEventListener('click', () => {
+    badgesDrawer.classList.remove('active');
+  });
+
+  // --------------------------------------------------------------------------
+  // 5. BIRTHDAY CAKE CANDLE BLOWOUT ENGINE
+  // --------------------------------------------------------------------------
   const cakeContainer = document.getElementById('cakeContainer');
   const flames = [document.getElementById('flame1'), document.getElementById('flame2'), document.getElementById('flame3')];
   const cakeStatus = document.getElementById('cakeStatus');
@@ -166,11 +326,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (!candlesLit) {
+      playChimeSound();
       triggerSmokePuffs();
       cakeStatus.innerHTML = '<i class="fa-solid fa-star"></i> Wish granted! 18th Birthday Candles Extinguished! 🎉';
       cakeStatus.style.color = '#ff75a0';
       triggerConfetti();
+      unlockBadge('badge2');
     } else {
+      playPopSound();
       cakeStatus.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Click the cake to blow out your 18th candles!';
       cakeStatus.style.color = '#ffd700';
     }
@@ -201,13 +364,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 5. ADVANCED 3D BOOKSHELF & DUAL-PAGE READ ENGINE
+  // --------------------------------------------------------------------------
+  // 6. ADVANCED 3D BOOKSHELF & DUAL-PAGE READ ENGINE + SECRET BOOK UNLOCK
+  // --------------------------------------------------------------------------
   const bookModal = document.getElementById('bookModal');
   const closeBookBtn = document.getElementById('closeBookBtn');
   const bookModalTitle = document.getElementById('bookModalTitle');
   const bookModalTag = document.getElementById('bookModalTag');
   const bookModalQuote = document.getElementById('bookModalQuote');
   const bookModalContent = document.getElementById('bookModalContent');
+  const bookSpineSecret = document.getElementById('bookSpineSecret');
+
+  let readBooksCount = new Set();
+  let secretBookUnlocked = false;
 
   const bookData = {
     bookSpine1: {
@@ -245,13 +414,38 @@ document.addEventListener('DOMContentLoaded', () => {
       tag: "CHAPTER VI • LATE NIGHT DMs",
       quote: `"Kidnap kar lo yrr esko badha cute hai 🙃 Exactly 💯"`,
       content: "Archive of late-night Instagram reels sent between India & Bangladesh at 3 AM.\n\nIncludes 500+ fluffy kitten memes, rain aesthetics, and anime edits!"
+    },
+    bookSpineSecret: {
+      title: "THE SECRET 18TH CHAPTER 👑",
+      tag: "CHAPTER VII • FOREVER & ALWAYS",
+      quote: `"You are my favorite mess, and I'm all yours 😚"`,
+      content: "Congratulations on unlocking the secret chapter!\n\n700 years of soul connections, 48,640+ Instagram messages, and infinite banter across India & Bangladesh.\n\nHappy 18th Birthday Mohima, my pretty princess! 🖤✨"
     }
   };
+
+  function unlockSecretBook() {
+    if (!secretBookUnlocked && bookSpineSecret) {
+      secretBookUnlocked = true;
+      bookSpineSecret.classList.remove('locked');
+      bookSpineSecret.querySelector('.spine-title').innerText = "THE SECRET 18TH CHAPTER 👑";
+      triggerConfetti();
+      playFanfareSound();
+    }
+  }
 
   Object.keys(bookData).forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('click', () => {
+        if (id === 'bookSpineSecret' && !secretBookUnlocked) {
+          alert("🔒 The Secret 18th Chapter is locked! Score 100% on the Quiz or type key '18' to unlock!");
+          return;
+        }
+        playBookSound();
+        readBooksCount.add(id);
+        if (readBooksCount.size >= 6) {
+          unlockBadge('badge3');
+        }
         const item = bookData[id];
         bookModalTitle.innerText = item.title;
         bookModalTag.innerText = item.tag;
@@ -262,27 +456,116 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  closeBookBtn.addEventListener('click', () => bookModal.classList.remove('active'));
-
-  // 6. INSTAGRAM DM VOICE NOTE AUDIO SIMULATOR
-  const voiceNoteTrigger = document.getElementById('voiceNoteTrigger');
-  const waveBars = document.getElementById('waveBars');
-  let vnPlaying = false;
-
-  voiceNoteTrigger.addEventListener('click', () => {
-    vnPlaying = !vnPlaying;
-    if (vnPlaying) {
-      waveBars.classList.add('active');
-      setTimeout(() => {
-        waveBars.classList.remove('active');
-        vnPlaying = false;
-      }, 4000);
-    } else {
-      waveBars.classList.remove('active');
-    }
+  closeBookBtn.addEventListener('click', () => {
+    playPopSound();
+    bookModal.classList.remove('active');
   });
 
-  // 7. QUIZ MINI-GAME ENGINE
+  // --------------------------------------------------------------------------
+  // 7. LIVE INSTAGRAM DM CHAT SIMULATOR & VOICE NOTE SFX
+  // --------------------------------------------------------------------------
+  const voiceNoteTrigger = document.getElementById('voiceNoteTrigger');
+  const dmChatBody = document.getElementById('dmChatBody');
+  const dmInputField = document.getElementById('dmInputField');
+  const dmInputForm = document.getElementById('dmInputForm');
+  const typingIndicator = document.getElementById('typingIndicator');
+  const starterChips = document.querySelectorAll('.starter-chip');
+
+  voiceNoteTrigger.addEventListener('click', () => {
+    playVoiceNoteAudio();
+    alert("🎵 Playing Mohima's Hindi Voice Note (0:14)...\n\"Listen to my voice note 🙈 Also I'm not studying Rotational Motion today! 😭\"");
+  });
+
+  const vedantResponses = [
+    { keywords: ['miss', 'missing'], response: "Awww miss me already? 🙈 Jaao pehle Rotational Motion complete karo, fir text karna! 💅" },
+    { keywords: ['rotational', 'physics', 'study', 'exam', 'hate'], response: "Padhayi nhi karoghe toh hostel ke mess main mere saath bartan dhona padhegha 😅 Jaao physics padho mohtarma!" },
+    { keywords: ['zade', 'christian', 'smut', 'romance', 'book'], response: "Zade Meadows fictional hai, main real hun 🤌 Stop overthinking and go get your beauty sleep!" },
+    { keywords: ['birthday', '18', 'happy'], response: "Happy 18th Birthday my pretty princess! 🥳✨ Make sure not to drink 4 cups of black coffee in one go today! 🖤" },
+    { keywords: ['700', 'skeleton', 'soul', 'old'], response: "700 saal purani skeleton princess ho aap, esliye 17 ki umar main dadi ammi jesi baate karti ho 🥱" },
+    { keywords: ['cute', 'accent', 'voice'], response: "Ur accent is cute but ngl ur hindi voice is even cuter 🤌 Ab zyaada sharmaao mat!" }
+  ];
+
+  function getVedantResponse(text) {
+    const lower = text.toLowerCase();
+    for (let item of vedantResponses) {
+      if (item.keywords.some(k => lower.includes(k))) {
+        return item.response;
+      }
+    }
+    return "Accha 🙂 700 saal purani aatma ho aap, banter never stops! Tell me more or go study physics 😂";
+  }
+
+  function appendChatMessage(sender, text) {
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble ${sender}`;
+    bubble.innerText = text;
+    dmChatBody.appendChild(bubble);
+    dmChatBody.scrollTop = dmChatBody.scrollHeight;
+  }
+
+  function handleUserMessage(msgText) {
+    if (!msgText.trim()) return;
+    playPopSound();
+    appendChatMessage('mohima', msgText);
+    unlockBadge('badge5');
+
+    typingIndicator.style.display = 'flex';
+    dmChatBody.scrollTop = dmChatBody.scrollHeight;
+
+    setTimeout(() => {
+      typingIndicator.style.display = 'none';
+      const reply = getVedantResponse(msgText);
+      appendChatMessage('vedant', reply);
+      playPopSound();
+    }, 1200);
+  }
+
+  dmInputForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = dmInputField.value;
+    dmInputField.value = '';
+    handleUserMessage(val);
+  });
+
+  starterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const msg = chip.getAttribute('data-msg');
+      handleUserMessage(msg);
+    });
+  });
+
+  // --------------------------------------------------------------------------
+  // 8. 3D VINTAGE POLAROID MEMORY LIGHTBOX MODAL
+  // --------------------------------------------------------------------------
+  const polaroidCards = document.querySelectorAll('.polaroid-card');
+  const polaroidModal = document.getElementById('polaroidModal');
+  const closePolaroidBtn = document.getElementById('closePolaroidBtn');
+  const polaroidModalImg = document.getElementById('polaroidModalImg');
+  const polaroidModalTitle = document.getElementById('polaroidModalTitle');
+  const polaroidModalNote = document.getElementById('polaroidModalNote');
+
+  polaroidCards.forEach(card => {
+    card.addEventListener('click', () => {
+      playBookSound();
+      const title = card.getAttribute('data-title');
+      const note = card.getAttribute('data-note');
+      const img = card.getAttribute('data-img');
+
+      polaroidModalTitle.innerText = title;
+      polaroidModalNote.innerText = note;
+      polaroidModalImg.src = img;
+      polaroidModal.classList.add('active');
+    });
+  });
+
+  closePolaroidBtn.addEventListener('click', () => {
+    playPopSound();
+    polaroidModal.classList.remove('active');
+  });
+
+  // --------------------------------------------------------------------------
+  // 9. QUIZ MINI-GAME ENGINE
+  // --------------------------------------------------------------------------
   const quizQuestions = [
     {
       question: "What is the primary delicacy served in Vedant's Boys' Hostel Mess?",
@@ -346,9 +629,11 @@ document.addEventListener('DOMContentLoaded', () => {
     allBtns.forEach(b => b.disabled = true);
 
     if (selectedIdx === q.answer) {
+      playChimeSound();
       btnEl.classList.add('correct');
       quizScore++;
     } else {
+      playPopSound();
       btnEl.classList.add('wrong');
       allBtns[q.answer].classList.add('correct');
     }
@@ -361,6 +646,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (quizScore === quizQuestions.length) {
           quizRewardModal.classList.add('active');
           triggerConfetti();
+          unlockBadge('badge4');
+          unlockSecretBook();
         } else {
           alert(`Quiz Finished! You scored ${quizScore}/${quizQuestions.length}. Retrying for 100% score!`);
           currentQuizIdx = 0;
@@ -372,9 +659,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   renderQuizQuestion();
-  closeQuizRewardBtn.addEventListener('click', () => quizRewardModal.classList.remove('active'));
+  closeQuizRewardBtn.addEventListener('click', () => {
+    playPopSound();
+    quizRewardModal.classList.remove('active');
+  });
 
-  // 8. FORTUNE WHEEL GENERATOR
+  // --------------------------------------------------------------------------
+  // 10. FORTUNE WHEEL GENERATOR
+  // --------------------------------------------------------------------------
   const fortuneResult = document.getElementById('fortuneResult');
   const spinFortuneBtn = document.getElementById('spinFortuneBtn');
 
@@ -388,6 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   spinFortuneBtn.addEventListener('click', () => {
+    playPopSound();
     fortuneResult.innerHTML = '🔮 <em>Consulting the 700-year-old dark romance archives...</em>';
     spinFortuneBtn.disabled = true;
 
@@ -396,10 +689,68 @@ document.addEventListener('DOMContentLoaded', () => {
       fortuneResult.innerHTML = fortunes[randomIndex];
       spinFortuneBtn.disabled = false;
       triggerConfetti();
+      playFanfareSound();
     }, 1200);
   });
 
-  // 9. MODAL OVERLAYS (LETTER & GIFT)
+  // --------------------------------------------------------------------------
+  // 11. LIVE BIRTHDAY TICKING COUNTER
+  // --------------------------------------------------------------------------
+  const clockDays = document.getElementById('clockDays');
+  const clockHours = document.getElementById('clockHours');
+  const clockMinutes = document.getElementById('clockMinutes');
+  const clockSeconds = document.getElementById('clockSeconds');
+
+  const birthDate = new Date();
+  birthDate.setHours(0, 0, 0, 0); // Start of today
+
+  function updateLiveClock() {
+    const now = new Date();
+    const diff = Math.floor((now - birthDate) / 1000);
+
+    const days = Math.floor(diff / (3600 * 24));
+    const hours = Math.floor((diff % (3600 * 24)) / 3600);
+    const minutes = Math.floor((diff % 3600) / 60);
+    const seconds = Math.floor(diff % 60);
+
+    if (clockDays) clockDays.innerText = String(days).padStart(2, '0');
+    if (clockHours) clockHours.innerText = String(hours).padStart(2, '0');
+    if (clockMinutes) clockMinutes.innerText = String(minutes).padStart(2, '0');
+    if (clockSeconds) clockSeconds.innerText = String(seconds).padStart(2, '0');
+  }
+
+  setInterval(updateLiveClock, 1000);
+  updateLiveClock();
+
+  // --------------------------------------------------------------------------
+  // 12. KEYBOARD EASTER EGGS ('18' or '700')
+  // --------------------------------------------------------------------------
+  const easterEggModal = document.getElementById('easterEggModal');
+  const closeEasterEggBtn = document.getElementById('closeEasterEggBtn');
+  let keySequence = '';
+
+  document.addEventListener('keydown', (e) => {
+    keySequence += e.key;
+    if (keySequence.length > 5) keySequence = keySequence.slice(-5);
+
+    if (keySequence.includes('18') || keySequence.includes('700')) {
+      keySequence = '';
+      easterEggModal.classList.add('active');
+      triggerConfetti();
+      playFanfareSound();
+      unlockBadge('badge6');
+      unlockSecretBook();
+    }
+  });
+
+  closeEasterEggBtn.addEventListener('click', () => {
+    playPopSound();
+    easterEggModal.classList.remove('active');
+  });
+
+  // --------------------------------------------------------------------------
+  // 13. MODAL OVERLAYS (LETTER & GIFT)
+  // --------------------------------------------------------------------------
   const letterModal = document.getElementById('letterModal');
   const openLetterBtn = document.getElementById('openLetterBtn');
   const closeLetterBtn = document.getElementById('closeLetterBtn');
@@ -408,23 +759,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const unboxGiftBtn = document.getElementById('unboxGiftBtn');
   const closeGiftBtn = document.getElementById('closeGiftBtn');
 
-  openLetterBtn.addEventListener('click', () => letterModal.classList.add('active'));
-  closeLetterBtn.addEventListener('click', () => letterModal.classList.remove('active'));
+  openLetterBtn.addEventListener('click', () => {
+    playBookSound();
+    letterModal.classList.add('active');
+  });
+  closeLetterBtn.addEventListener('click', () => {
+    playPopSound();
+    letterModal.classList.remove('active');
+  });
 
   unboxGiftBtn.addEventListener('click', () => {
+    playFanfareSound();
     giftModal.classList.add('active');
     triggerConfetti();
   });
-  closeGiftBtn.addEventListener('click', () => giftModal.classList.remove('active'));
+  closeGiftBtn.addEventListener('click', () => {
+    playPopSound();
+    giftModal.classList.remove('active');
+  });
 
   window.addEventListener('click', (e) => {
     if (e.target === letterModal) letterModal.classList.remove('active');
     if (e.target === giftModal) giftModal.classList.remove('active');
     if (e.target === bookModal) bookModal.classList.remove('active');
     if (e.target === quizRewardModal) quizRewardModal.classList.remove('active');
+    if (e.target === polaroidModal) polaroidModal.classList.remove('active');
+    if (e.target === easterEggModal) easterEggModal.classList.remove('active');
   });
 
-  // 10. ADVANCED ROMANTIC LOFI MUSIC BOX SYNTHESIZER
+  // --------------------------------------------------------------------------
+  // 14. ADVANCED ROMANTIC LOFI MUSIC BOX SYNTHESIZER
+  // --------------------------------------------------------------------------
   const musicToggleBtn = document.getElementById('musicToggleBtn');
   let audioPlaying = false;
   let audioCtx, musicTimer;
@@ -457,9 +822,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       osc.start();
       osc.stop(audioCtx.currentTime + 1.4);
-    } catch (e) {
-      console.log('Audio note error:', e);
-    }
+    } catch (e) {}
   }
 
   function startLofiLoop() {
