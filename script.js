@@ -97,10 +97,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Global gesture unlock listener for browser audio policy
+  ['click', 'touchstart', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, () => {
+      initSfxContext();
+    }, { once: false });
+  });
+
   function setSpatialMuffle(muffleOn) {
     if (!biquadFilter || !sfxCtx) return;
     const targetFreq = muffleOn ? 400 : 20000;
-    biquadFilter.frequency.exponentialRampToValueAtTime(targetFreq, sfxCtx.currentTime + 0.3);
+    try {
+      biquadFilter.frequency.cancelScheduledValues(sfxCtx.currentTime);
+      biquadFilter.frequency.setValueAtTime(biquadFilter.frequency.value || 20000, sfxCtx.currentTime);
+      biquadFilter.frequency.exponentialRampToValueAtTime(targetFreq, sfxCtx.currentTime + 0.3);
+    } catch (e) {
+      biquadFilter.frequency.value = targetFreq;
+    }
   }
 
   function playPopSound() {
@@ -213,6 +226,57 @@ document.addEventListener('DOMContentLoaded', () => {
         osc.stop(t + n.d);
         t += n.d + 0.05;
       } catch (e) {}
+    });
+  // Ambient Lo-Fi & Rain Sound Synthesizer for Top Control Bar
+  const musicToggleBtn = document.getElementById('musicToggleBtn');
+  let isAmbientPlaying = false;
+  let ambientOscInterval = null;
+
+  function playLofiChord() {
+    initSfxContext();
+    if (!sfxCtx || !isAmbientPlaying) return;
+    const chords = [
+      [261.63, 329.63, 392.00, 493.88], // Cmaj7
+      [220.00, 261.63, 329.63, 392.00], // Am7
+      [174.61, 220.00, 261.63, 329.63], // Fmaj7
+      [196.00, 246.94, 293.66, 349.23]  // G7
+    ];
+    const chord = chords[Math.floor(Math.random() * chords.length)];
+
+    chord.forEach((freq) => {
+      try {
+        const osc = sfxCtx.createOscillator();
+        const gain = sfxCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, sfxCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.001, sfxCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.03, sfxCtx.currentTime + 0.4);
+        gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 2.5);
+
+        osc.connect(gain);
+        gain.connect(biquadFilter);
+        osc.start();
+        osc.stop(sfxCtx.currentTime + 2.6);
+      } catch (e) {}
+    });
+  }
+
+  if (musicToggleBtn) {
+    musicToggleBtn.addEventListener('click', () => {
+      initSfxContext();
+      if (!isAmbientPlaying) {
+        isAmbientPlaying = true;
+        musicToggleBtn.classList.add('playing');
+        musicToggleBtn.innerHTML = '<i class="fa-solid fa-volume-xmark" style="color: var(--accent-rose);"></i>';
+        playLofiChord();
+        ambientOscInterval = setInterval(playLofiChord, 3000);
+      } else {
+        isAmbientPlaying = false;
+        musicToggleBtn.classList.remove('playing');
+        musicToggleBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+        if (ambientOscInterval) clearInterval(ambientOscInterval);
+      }
     });
   }
 
