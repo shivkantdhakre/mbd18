@@ -694,29 +694,41 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 11. LIVE BIRTHDAY TICKING COUNTER
+  // 11. LIVE BIRTHDAY TICKING COUNTER (JULY 27 - BANGLADESH TIME UTC+6)
   // --------------------------------------------------------------------------
   const clockDays = document.getElementById('clockDays');
   const clockHours = document.getElementById('clockHours');
   const clockMinutes = document.getElementById('clockMinutes');
   const clockSeconds = document.getElementById('clockSeconds');
+  const clockTitle = document.getElementById('clockTitle');
 
-  const birthDate = new Date();
-  birthDate.setHours(0, 0, 0, 0); // Start of today
+  // July 27 00:00:00 Bangladesh Standard Time (UTC+6)
+  const bangladeshBirthday = new Date('2026-07-27T00:00:00+06:00');
 
   function updateLiveClock() {
     const now = new Date();
-    const diff = Math.floor((now - birthDate) / 1000);
+    const diffInSeconds = Math.floor((now.getTime() - bangladeshBirthday.getTime()) / 1000);
 
-    const days = Math.floor(diff / (3600 * 24));
-    const hours = Math.floor((diff % (3600 * 24)) / 3600);
-    const minutes = Math.floor((diff % 3600) / 60);
-    const seconds = Math.floor(diff % 60);
+    const isCountdown = diffInSeconds < 0;
+    const absDiff = Math.abs(diffInSeconds);
+
+    const days = Math.floor(absDiff / (3600 * 24));
+    const hours = Math.floor((absDiff % (3600 * 24)) / 3600);
+    const minutes = Math.floor((absDiff % 3600) / 60);
+    const seconds = Math.floor(absDiff % 60);
 
     if (clockDays) clockDays.innerText = String(days).padStart(2, '0');
     if (clockHours) clockHours.innerText = String(hours).padStart(2, '0');
     if (clockMinutes) clockMinutes.innerText = String(minutes).padStart(2, '0');
     if (clockSeconds) clockSeconds.innerText = String(seconds).padStart(2, '0');
+
+    if (clockTitle) {
+      if (isCountdown) {
+        clockTitle.innerText = "Countdown to Mohima's 18th Birthday (Dhaka Time 🇧🇩) ⏳";
+      } else {
+        clockTitle.innerText = "Time Since Mohima Turned 18 (Dhaka Time 🇧🇩) ✨";
+      }
+    }
   }
 
   setInterval(updateLiveClock, 1000);
