@@ -1,8 +1,12 @@
 # Ignore data & parser scripts for web deployment
-*.json
+all_messages.json
+fine_tuning_dataset.json
+gf_profile.json
+vedant_profile.json
 *.jsonl
 *.html.bak
 parsingscript.py
 message_*.html
 .vercel
 node_modules
+
