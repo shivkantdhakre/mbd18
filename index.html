@@ -34,7 +34,7 @@
     <button class="control-btn" id="presetBtn" title="Switch Particles (Rain / Stars / Petals)">
       <i class="fa-solid fa-wand-magic-sparkles"></i>
     </button>
-    <button class="control-btn" id="musicToggleBtn" title="Toggle Ambient Rain / Lo-Fi Music Synth">
+    <button class="control-btn" id="musicToggleBtn" title="Toggle Ambient Storm & Lo-Fi Music Synth">
       <i class="fa-solid fa-volume-high"></i>
     </button>
   </div>
@@ -81,11 +81,11 @@
           <p>Live DM Conversation</p>
         </div>
       </div>
-      <div class="badge-item locked" id="badge6" data-title="Easter Egg Hunter" data-desc="Discovered a secret keyboard code!">
-        <div class="badge-icon">🔮</div>
+      <div class="badge-item locked" id="badge6" data-title="Caffeine Overdose" data-desc="Brewed 4 packets of 3 AM black coffee!">
+        <div class="badge-icon">☕</div>
         <div class="badge-info">
-          <h5>Easter Egg Hunter</h5>
-          <p>Secret Code Unlocked</p>
+          <h5>Caffeine Master</h5>
+          <p>4 Packets Brewed</p>
         </div>
       </div>
     </div>
@@ -104,6 +104,30 @@
       <p class="hero-tagline">
         To my favorite novel dark-romance lover girl, A-Levels survivor, and men-hater club executive. Welcome to your official 700th birthday vault! 🥀📖
       </p>
+
+      <!-- 1324 AD Carrier Pigeon Launcher & 3 AM Coffee Widget Bar -->
+      <div class="interactive-hero-bar">
+        <button class="btn-pigeon" id="pigeonBtn">
+          <i class="fa-solid fa-dove"></i> Release 1324 AD Carrier Pigeon 🕊️
+        </button>
+      </div>
+
+      <!-- 3 AM Black Coffee Brew Widget -->
+      <div class="coffee-widget-card" id="coffeeWidgetCard">
+        <div class="coffee-widget-header">
+          <span><i class="fa-solid fa-mug-hot" style="color: var(--accent-gold);"></i> 3 AM Black Coffee Brew Station</span>
+          <span class="coffee-count-text" id="coffeeCountText">0/4 Packets</span>
+        </div>
+        <div class="coffee-packets-row">
+          <button class="coffee-packet-btn" data-packet="1">☕ Packet 1</button>
+          <button class="coffee-packet-btn" data-packet="2">☕ Packet 2</button>
+          <button class="coffee-packet-btn" data-packet="3">☕ Packet 3</button>
+          <button class="coffee-packet-btn" data-packet="4">☕ Packet 4</button>
+        </div>
+        <div class="caffeine-meter-wrapper">
+          <div class="caffeine-meter-fill" id="caffeineMeterFill"></div>
+        </div>
+      </div>
 
       <!-- Stats Counter Bar -->
       <div class="stats-counter-bar">
@@ -185,7 +209,17 @@
             <div class="ribbon-tag" style="background: #c77dff;"></div>
             <span class="spine-title">CAT MEMES & 3 AM REELS</span>
           </div>
-          <!-- Secret Book 7 (Locked) -->
+          <!-- Book 7 (New: Anime / ORV) -->
+          <div class="book-spine book-7" id="bookSpine7">
+            <div class="ribbon-tag" style="background: var(--accent-gold);"></div>
+            <span class="spine-title">LLOYD & ORV MANHWA</span>
+          </div>
+          <!-- Book 8 (New: Silent Patient) -->
+          <div class="book-spine book-8" id="bookSpine8">
+            <div class="ribbon-tag" style="background: #e63946;"></div>
+            <span class="spine-title">SILENT PATIENT THRILLER</span>
+          </div>
+          <!-- Secret Book 9 (Locked) -->
           <div class="book-spine book-secret locked" id="bookSpineSecret" title="Unlock by scoring 100% on the Quiz or entering secret key '18'!">
             <div class="ribbon-tag" style="background: var(--accent-gold);"></div>
             <span class="spine-title">🔒 SECRET 18TH CHAPTER</span>
@@ -210,11 +244,24 @@
             <span class="online-indicator"></span>
           </div>
           <div class="dm-user-details">
-            <h4 style="color: var(--text-main); font-size: 1.1rem;">Viöla_Odessǣ & All Fiction</h4>
+            <h4 style="color: var(--text-main); font-size: 1.1rem;">Viöla_Odessǣ & <span id="vedantDisplayNickname">All Fiction</span></h4>
             <p style="color: var(--text-muted); font-size: 0.85rem;" id="chatStatusText">
               <i class="fa-solid fa-circle" style="color: #2bb379; font-size: 0.6rem;"></i> Active Now • India ↔ Bangladesh
             </p>
           </div>
+          
+          <!-- Dynamic Nickname Selector Dropdown -->
+          <select class="nickname-select-dropdown" id="nicknameSelect">
+            <option value="All Fiction">Nickname: All Fiction</option>
+            <option value="mohtarma">Nickname: mohtarma</option>
+            <option value="bbgg">Nickname: bbgg</option>
+            <option value="mustache man">Nickname: mustache man</option>
+            <option value="700-yr skeleton Princess">Nickname: 700-yr skeleton Princess</option>
+            <option value="Barama">Nickname: Barama</option>
+            <option value="chote">Nickname: chote</option>
+            <option value="my lugai jaisa dost">Nickname: my lugai jaisa dost</option>
+          </select>
+
           <button class="dm-action-btn" id="voiceNoteTrigger" title="Play Voice Note Audio">
             <i class="fa-solid fa-circle-play"></i> <span>Hindi Voice Note (0:14)</span>
           </button>
@@ -242,7 +289,7 @@
         <!-- Typing Indicator -->
         <div class="typing-indicator-bar" id="typingIndicator" style="display: none;">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-          <span>Vedant is typing...</span>
+          <span><span class="typing-name">Vedant</span> is typing...</span>
         </div>
 
         <!-- Interactive Quick Prompt Chips -->
@@ -255,7 +302,7 @@
 
         <!-- Interactive Input Form -->
         <form class="dm-input-form" id="dmInputForm">
-          <input type="text" id="dmInputField" class="dm-text-input" placeholder="Message All Fiction (Vedant)..." autocomplete="off">
+          <input type="text" id="dmInputField" class="dm-text-input" placeholder="Message All Fiction..." autocomplete="off">
           <button type="submit" class="dm-send-btn" id="dmSendBtn">
             <i class="fa-solid fa-paper-plane"></i>
           </button>
@@ -263,7 +310,7 @@
       </div>
     </section>
 
-    <!-- SECTION 3: 3D VINTAGE POLAROID MEMORY SCRAPBOOK -->
+    <!-- SECTION 3: 3D VINTAGE POLAROID MEMORY SCRAPBOOK & GHOST MIRROR -->
     <section>
       <div class="section-title-wrapper">
         <p class="section-tag"><i class="fa-solid fa-camera-retro"></i> VINTAGE MEMORY VAULT</p>
@@ -308,9 +355,96 @@
           <p class="polaroid-caption">Cute Little Princess 💖</p>
         </div>
       </div>
+
+      <!-- Ghost Covered Mirror Element -->
+      <div class="ghost-mirror-container">
+        <div class="ghost-mirror-card" id="ghostMirrorCard">
+          <div class="dupatta-cover-overlay">
+            <span class="dupatta-text">🧵 Old Dupatta Mirror Cover (Hover to Dissipate Ghost Reflection)</span>
+          </div>
+          <div class="ghost-spirit-reflection">👻 700-Year-Old Spirit Dissipating...</div>
+        </div>
+      </div>
     </section>
 
-    <!-- SECTION 4: 700TH BIRTHDAY QUEST (QUIZ MINI-GAME) -->
+    <!-- SECTION 4: 3D BANTER MEMORY FLASHCARDS CAROUSEL -->
+    <section>
+      <div class="section-title-wrapper">
+        <p class="section-tag"><i class="fa-solid fa-layer-group"></i> 3D MEMORY FLASHCARDS</p>
+        <h2 class="section-heading">Vedant & Mohima Banter Archives 🎴</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Hover or tap any card to flip it and reveal Vedant's commentary!</p>
+      </div>
+
+      <div class="flashcard-carousel-container">
+        <button class="flashcard-nav-btn prev" id="flashPrevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+
+        <div class="flashcards-track-wrapper">
+          <div class="flashcard-3d-box" id="flashcard1">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <span class="flash-tag">THE COVERED MIRROR INCIDENT</span>
+                <h4>🪞 Dupatta Over The Mirror</h4>
+                <p class="flash-quote">"Mere room ka ayna humesha cover up rehta hai dupatta se... phir mom ki gali khani padhti hai 😭"</p>
+                <span class="flip-hint">Tap to flip card ↪</span>
+              </div>
+              <div class="flashcard-back">
+                <h4>Vedant's Roast 💬</h4>
+                <p>"700 saal purani atma ho aap, toh ayna cover kyu karti ho? Ghosts won't eat you, you are the ghost chief! 😂🤌"</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flashcard-3d-box" id="flashcard2">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <span class="flash-tag">THE BANGLADESH LOCATION ROAST</span>
+                <h4>🇧🇩 Mohammadpur, Dhaka</h4>
+                <p class="flash-quote">"Mohammadpur in BD 😭😭 Pehle batati deadline age he!"</p>
+                <span class="flip-hint">Tap to flip card ↪</span>
+              </div>
+              <div class="flashcard-back">
+                <h4>Vedant's Roast 💬</h4>
+                <p>"Mohammadpur is officially the Gangs of Wasseypur of Bangladesh! Shaan se bolti ho like u r the Prime Minister 🥱😂"</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flashcard-3d-box" id="flashcard3">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <span class="flash-tag">ENGINEERING HOSTEL MESS</span>
+                <h4>🍌 Dhoodh Aur Kele Gourmet</h4>
+                <p class="flash-quote">"Hostel main rehta hun yaha sab aalsi hai 😅 Dhoodh aur kele hai hostel mess main 😑"</p>
+                <span class="flip-hint">Tap to flip card ↪</span>
+              </div>
+              <div class="flashcard-back">
+                <h4>Vedant's Roast 💬</h4>
+                <p>"5th semester B.Tech engineering gourmet dinner: 2 bananas, milk, and 3 AM cockroach dodging in the mess hall 🥩😂"</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flashcard-3d-box" id="flashcard4">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <span class="flash-tag">A-LEVELS MOCK EXAM SURVIVOR</span>
+                <h4>📚 Rotational Motion & Bio</h4>
+                <p class="flash-quote">"Next week se mock he mera... physics me rotational motion kuch samajh nahi ata! 😭"</p>
+                <span class="flip-hint">Tap to flip card ↪</span>
+              </div>
+              <div class="flashcard-back">
+                <h4>Vedant's Roast 💬</h4>
+                <p>"Padhayi kar lo mohtarma, nhi toh hostel ke mess main mere saath bartan dhona padhegha! Mock exam survivor badge 🏅"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="flashcard-nav-btn next" id="flashNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <!-- SECTION 5: 700TH BIRTHDAY QUEST (QUIZ MINI-GAME) -->
     <section>
       <div class="section-title-wrapper">
         <p class="section-tag"><i class="fa-solid fa-gamepad"></i> INTERACTIVE MINI-GAME</p>
@@ -318,21 +452,18 @@
       </div>
 
       <div class="quiz-card">
-        <p style="color: var(--accent-rose); font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 10px;" id="quizProgress">QUESTION 1 OF 3</p>
+        <p style="color: var(--accent-rose); font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 10px;" id="quizProgress">QUESTION 1 OF 6</p>
         <h3 class="quiz-question-title" id="quizQuestion">What is the main delicacy served in Vedant's Boys' Hostel Mess?</h3>
 
         <div class="quiz-options-grid" id="quizOptions">
-          <button class="quiz-opt-btn" data-index="0">A) Dhoodh aur Kele (Banana & Milk) 🍌</button>
-          <button class="quiz-opt-btn" data-index="1">B) Five-Star Gourmet Steak 🥩</button>
-          <button class="quiz-opt-btn" data-index="2">C) Fresh Mango Cupcakes 🧁</button>
-          <button class="quiz-opt-btn" data-index="3">D) Cold Coffee & Pizza 🍕</button>
+          <!-- Dynamic options rendered via JS -->
         </div>
 
         <p style="font-size: 0.9rem; color: var(--text-muted); display: none;" id="quizFeedback"></p>
       </div>
     </section>
 
-    <!-- SECTION 5: DARK ROMANCE TROPE & FORTUNE WHEEL -->
+    <!-- SECTION 6: DARK ROMANCE TROPE & FORTUNE WHEEL -->
     <section>
       <div class="fortune-section-card">
         <p class="section-tag"><i class="fa-solid fa-dharmachakra"></i> 700TH BIRTHDAY FORTUNE WHEEL</p>
@@ -353,7 +484,7 @@
       </div>
     </section>
 
-    <!-- SECTION 6: LIVE BIRTHDAY MEMORY TICKING CLOCK & BANTER ANALYTICS -->
+    <!-- SECTION 7: LIVE BIRTHDAY MEMORY TICKING CLOCK & BANTER ANALYTICS -->
     <section>
       <div class="section-title-wrapper">
         <p class="section-tag"><i class="fa-solid fa-clock"></i> 27 JULY • INDIAN STANDARD TIME (IST, UTC+5:30)</p>
@@ -382,7 +513,7 @@
         </div>
       </div>
 
-      <div class="analytics-card-grid" style="margin-top: 30px;">
+      <div class="analytics-card-grid" style="margin-top: 35px;">
         <div class="analytic-card">
           <div class="analytic-icon"><i class="fa-solid fa-heart" style="color: var(--accent-rose);"></i></div>
           <h4>Top Emoji Exchanged</h4>
@@ -401,7 +532,7 @@
       </div>
     </section>
 
-    <!-- SECTION 7: DIGITAL CLONE PERSONAL GPT PORTAL CARD -->
+    <!-- SECTION 8: DIGITAL CLONE PERSONAL GPT PORTAL CARD -->
     <section id="digital-clone-section">
       <div class="digital-clone-card">
         <div class="gpt-badge-title">
@@ -461,6 +592,24 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- 1324 AD VINTAGE PIGEON POST SCROLL MODAL -->
+  <div class="modal-overlay" id="pigeonModal">
+    <div class="pigeon-scroll-box">
+      <button class="close-modal-btn" id="closePigeonBtn">&times;</button>
+      <div class="parchment-scroll-content">
+        <div class="wax-seal-icon">📜</div>
+        <p class="scroll-tag">OFFICIAL CARRIER PIGEON POST • 1324 AD ARCHIVES</p>
+        <h3 class="scroll-title">To My 700-Year-Old Princess 🕊️</h3>
+        <p class="scroll-body">
+"700 years ago, pigeon letters took 3 weeks to cross borders from India to Bangladesh. Today, 48,640+ Instagram messages travel at the speed of light.
+<br><br>
+Whether it's 1324 AD or 2026, you are still my favorite mess, and I'm all yours. Happy 18th Birthday, Mohima!"
+        </p>
+        <div class="scroll-signature">— Sealed by Knight of the Little Princess 🛡️✨</div>
       </div>
     </div>
   </div>

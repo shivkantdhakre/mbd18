@@ -1189,6 +1189,322 @@ body {
   margin-top: -15px;
 }
 
+/* Book 7 & 8 Spine Variants */
+.book-7 { background: linear-gradient(135deg, #7a2c14, #c94f26); border-right: 2px solid var(--accent-gold); }
+.book-8 { background: linear-gradient(135deg, #1f4037, #99f2c8); border-right: 2px solid #e63946; }
+
+/* GPU Acceleration for 3D Elements */
+.book-spine, .polaroid-card, .flashcard-3d-box {
+  transform: translate3d(0,0,0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* 1324 AD Pigeon Post Launcher Button */
+.interactive-hero-bar {
+  margin: 15px 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-pigeon {
+  background: linear-gradient(135deg, #4a1936, #9d4edd);
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-pigeon:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+/* 3 AM Black Coffee Brew Widget */
+.coffee-widget-card {
+  background: rgba(25, 9, 32, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 15px auto 25px;
+  max-width: 580px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.coffee-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.coffee-count-text {
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.coffee-packets-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.coffee-packet-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.coffee-packet-btn.brewed {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+.caffeine-meter-wrapper {
+  width: 100%;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 117, 160, 0.2);
+}
+
+.caffeine-meter-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-rose), var(--accent-gold));
+  transition: width 0.4s ease;
+}
+
+/* IG DM Nickname Dropdown */
+.nickname-select-dropdown {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--glass-border);
+  color: var(--accent-rose);
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 0.82rem;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Ghost Covered Mirror Card */
+.ghost-mirror-container {
+  margin: 30px auto;
+  max-width: 480px;
+}
+
+.ghost-mirror-card {
+  position: relative;
+  background: linear-gradient(135deg, #1b0a20, #36143f);
+  border: 2px solid #5a2846;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  backface-visibility: hidden;
+}
+
+.dupatta-cover-overlay {
+  background: rgba(107, 29, 61, 0.85);
+  padding: 16px;
+  border-radius: 12px;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  transition: all 1.5s ease;
+}
+
+.ghost-spirit-reflection {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  color: var(--accent-gold);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 1.5s ease;
+}
+
+.ghost-mirror-card:hover .dupatta-cover-overlay {
+  filter: blur(14px);
+  opacity: 0;
+  transform: scale(1.15);
+}
+
+.ghost-mirror-card:hover .ghost-spirit-reflection {
+  opacity: 1;
+}
+
+/* 3D Banter Memory Flashcards Carousel */
+.flashcard-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 60px;
+  perspective: 1200px;
+}
+
+.flashcards-track-wrapper {
+  width: 100%;
+  max-width: 580px;
+  min-height: 280px;
+  position: relative;
+}
+
+.flashcard-3d-box {
+  width: 100%;
+  height: 260px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.flashcard-3d-box.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, rgba(45, 18, 53, 0.9), rgba(25, 9, 32, 0.95));
+  border: 1px solid var(--glass-border);
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, rgba(107, 29, 61, 0.95), rgba(30, 12, 36, 0.95));
+  border: 1px solid var(--accent-gold);
+  transform: rotateY(180deg);
+}
+
+.flash-tag {
+  font-size: 0.75rem;
+  color: var(--accent-gold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.flash-quote {
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.flip-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.flashcard-nav-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  color: var(--accent-rose);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.flashcard-nav-btn:hover {
+  background: rgba(255, 117, 160, 0.2);
+  transform: scale(1.1);
+}
+
+/* 1324 AD Parchment Scroll Modal */
+.pigeon-scroll-box {
+  background: #f4ebda;
+  color: #2b1124;
+  width: 90%;
+  max-width: 550px;
+  border-radius: 12px;
+  padding: 35px;
+  border: 6px double #6b1d3d;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+  position: relative;
+  text-align: center;
+}
+
+.wax-seal-icon {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+}
+
+.scroll-tag {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  color: #8b3a62;
+  letter-spacing: 2px;
+}
+
+.scroll-title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: #3b1429;
+  margin: 10px 0 15px;
+}
+
+.scroll-body {
+  font-family: var(--font-handwriting);
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: #1a0f1d;
+}
+
+.scroll-signature {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: #8b3a62;
+  margin-top: 20px;
+}
+
 /* Banter Analytics Cards Grid */
 .analytics-card-grid {
   display: grid;
@@ -1379,7 +1695,7 @@ body {
   .page-book-title { font-size: 1.35rem; }
   .vedant-handwritten-text { font-size: 1.15rem; }
   
-  .letter-modal-box, .polaroid-modal-box { width: 94%; padding: 22px 16px; border-radius: 18px; }
+  .letter-modal-box, .polaroid-modal-box, .pigeon-scroll-box { width: 94%; padding: 22px 16px; border-radius: 18px; }
   .polaroid-modal-box img { max-height: 280px; }
   .close-modal-btn { top: 12px; right: 12px; width: 34px; height: 34px; font-size: 1.1rem; }
 }
@@ -1391,5 +1707,6 @@ body {
   .clock-label { font-size: 0.58rem; }
   .polaroid-img-wrapper { height: 260px; }
 }
+
 
 
