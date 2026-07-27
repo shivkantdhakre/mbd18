@@ -1294,9 +1294,16 @@ body {
   transition: width 0.4s ease;
 }
 
-/* IG DM Nickname Dropdown */
+/* IG DM Nickname Dropdowns Group */
+.nickname-dropdowns-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .nickname-select-dropdown {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--glass-border);
   color: var(--accent-rose);
   padding: 6px 12px;
@@ -1304,6 +1311,12 @@ body {
   font-size: 0.82rem;
   outline: none;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nickname-select-dropdown:hover, .nickname-select-dropdown:focus {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
 }
 
 /* Ghost Covered Mirror Card */
@@ -1612,8 +1625,165 @@ body {
   transition: transform 0.6s ease-out, opacity 0.6s ease-out;
 }
 
+/* Toast Notification System */
+.toast-container {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  max-width: 380px;
+  width: calc(100% - 50px);
+}
+
+.toast-message {
+  background: rgba(25, 9, 32, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--accent-rose);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: var(--text-main);
+  font-size: 0.92rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 117, 160, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+  animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.toast-message.gold {
+  border-color: var(--accent-gold);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.toast-message.toast-out {
+  animation: toastOut 0.3s forwards ease-in;
+}
+
+.toast-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+@keyframes toastIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+}
+
+/* Bookshelf Mobile Scroll Hint */
+.bookshelf-scroll-hint {
+  display: none;
+  font-size: 0.82rem;
+  color: var(--accent-gold);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* Modal Close Button Accessibility & Focus Outline */
+.close-modal-btn {
+  background: rgba(255, 117, 160, 0.2);
+  border: 1px solid var(--accent-rose);
+  color: var(--accent-gold);
+  transition: all 0.2s ease;
+}
+
+.close-modal-btn:hover, .close-modal-btn:focus-visible {
+  background: var(--accent-rose);
+  color: #ffffff;
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+/* Prominent IG DM Typing Indicator Bar */
+.typing-indicator-bar {
+  background: rgba(255, 117, 160, 0.15);
+  border: 1px solid rgba(255, 117, 160, 0.35);
+  border-radius: 18px;
+  padding: 10px 18px;
+  margin-bottom: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-rose);
+  font-size: 0.88rem;
+  box-shadow: 0 4px 15px rgba(255, 117, 160, 0.15);
+}
+
+/* Flashcards Carousel Progress Counter & Dots */
+.flashcards-pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: -35px;
+  margin-bottom: 50px;
+}
+
+.flashcard-counter {
+  font-size: 0.85rem;
+  color: var(--accent-gold);
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+.flashcard-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.flashcard-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.flashcard-dots .dot.active {
+  background: var(--accent-rose);
+  transform: scale(1.25);
+  box-shadow: 0 0 10px var(--accent-rose);
+}
+
+/* Disabled Coffee Packet Button State */
+.coffee-packet-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 /* Mobile Devices (max-width: 600px) */
 @media (max-width: 600px) {
+  .bookshelf-scroll-hint { display: block; }
+  .shelf-row {
+    scroll-snap-type: x mandatory;
+  }
+  .book-spine {
+    scroll-snap-align: center;
+  }
+
   html, body { overflow-x: hidden; width: 100%; }
   .app-container { padding: 12px; }
 

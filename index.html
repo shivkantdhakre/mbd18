@@ -25,6 +25,9 @@
   <!-- Background Animated Canvas -->
   <canvas id="canvas-bg"></canvas>
 
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
   <!-- Top Control Bar (Audio, Presets, Achievements) -->
   <div class="top-control-bar">
     <button class="control-btn" id="badgeToggleBtn" title="Collectible Achievements & Badges">
@@ -175,6 +178,7 @@
         <p class="section-tag"><i class="fa-solid fa-book-skull"></i> DARK ACADEMIA 3D BOOKSHELF</p>
         <h2 class="section-heading">Mohima's 700-Year-Old Reading Nook 📚</h2>
         <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Click on any 3D book spine to pull it off the shelf and read Vedant's handwritten notes!</p>
+        <p class="bookshelf-scroll-hint"><i class="fa-solid fa-arrows-left-right"></i> Scroll horizontally to browse 9 books</p>
       </div>
 
       <div class="bookshelf-container">
@@ -244,23 +248,39 @@
             <span class="online-indicator"></span>
           </div>
           <div class="dm-user-details">
-            <h4 style="color: var(--text-main); font-size: 1.1rem;">Viöla_Odessǣ & <span id="vedantDisplayNickname">All Fiction</span></h4>
+            <h4 style="color: var(--text-main); font-size: 1.1rem;"><span id="mohimaDisplayNickname">Viöla_Odessǣ</span> & <span id="vedantDisplayNickname">All Fiction</span></h4>
             <p style="color: var(--text-muted); font-size: 0.85rem;" id="chatStatusText">
               <i class="fa-solid fa-circle" style="color: #2bb379; font-size: 0.6rem;"></i> Active Now • India ↔ Bangladesh
             </p>
           </div>
           
-          <!-- Dynamic Nickname Selector Dropdown -->
-          <select class="nickname-select-dropdown" id="nicknameSelect">
-            <option value="All Fiction">Nickname: All Fiction</option>
-            <option value="mohtarma">Nickname: mohtarma</option>
-            <option value="bbgg">Nickname: bbgg</option>
-            <option value="mustache man">Nickname: mustache man</option>
-            <option value="700-yr skeleton Princess">Nickname: 700-yr skeleton Princess</option>
-            <option value="Barama">Nickname: Barama</option>
-            <option value="chote">Nickname: chote</option>
-            <option value="my lugai jaisa dost">Nickname: my lugai jaisa dost</option>
-          </select>
+          <!-- Separate Dynamic Nickname Selectors -->
+          <div class="nickname-dropdowns-group">
+            <!-- Vedant's Nickname Dropdown -->
+            <select class="nickname-select-dropdown" id="vedantNicknameSelect" title="Select Vedant's Nickname">
+              <option value="All Fiction">Vedant: All Fiction</option>
+              <option value="bbgg">Vedant: bbgg</option>
+              <option value="darling">Vedant: darling</option>
+              <option value="babe">Vedant: babe</option>
+              <option value="gay island resident">Vedant: gay island resident</option>
+              <option value="baby girl">Vedant: baby girl</option>
+              <option value="dino">Vedant: dino</option>
+            </select>
+
+            <!-- Mohima's Nickname Dropdown -->
+            <select class="nickname-select-dropdown" id="mohimaNicknameSelect" title="Select Mohima's Nickname">
+              <option value="Viöla_Odessǣ">Mohima: Viöla_Odessǣ</option>
+              <option value="mohtarma">Mohima: mohtarma</option>
+              <option value="700 yrs old skeleton Princess">Mohima: 700 yrs old skeleton Princess</option>
+              <option value="chhoti bacchi">Mohima: chhoti bacchi</option>
+              <option value="my sweetheart">Mohima: my sweetheart</option>
+              <option value="my kuchu puchu">Mohima: my kuchu puchu</option>
+              <option value="my cute little princess">Mohima: my cute little princess</option>
+              <option value="my men hater darling">Mohima: my men hater darling</option>
+              <option value="my sugarplum">Mohima: my sugarplum</option>
+              <option value="mustache man">Mohima: mustache man</option>
+            </select>
+          </div>
 
           <button class="dm-action-btn" id="voiceNoteTrigger" title="Play Voice Note Audio">
             <i class="fa-solid fa-circle-play"></i> <span>Hindi Voice Note (0:14)</span>
@@ -441,6 +461,17 @@
         </div>
 
         <button class="flashcard-nav-btn next" id="flashNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+
+      <!-- Flashcards Progress Counter & Dots -->
+      <div class="flashcards-pagination" id="flashcardsPagination">
+        <span class="flashcard-counter" id="flashcardCounter">CARD 1 OF 4</span>
+        <div class="flashcard-dots">
+          <span class="dot active" data-idx="0"></span>
+          <span class="dot" data-idx="1"></span>
+          <span class="dot" data-idx="2"></span>
+          <span class="dot" data-idx="3"></span>
+        </div>
       </div>
     </section>
 

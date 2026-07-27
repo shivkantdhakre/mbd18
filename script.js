@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const stateToSave = {
           caffeineLevel: appState.caffeineLevel,
-          activeNickname: appState.activeNickname,
+          activeVedantNickname: appState.activeVedantNickname,
+          activeMohimaNickname: appState.activeMohimaNickname,
           unlockedBadges: Array.from(unlockedBadges),
           secretBookUnlocked: secretBookUnlocked
         };
@@ -41,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (savedObj) {
         if (savedObj.caffeineLevel) appState.caffeineLevel = savedObj.caffeineLevel;
-        if (savedObj.activeNickname) appState.activeNickname = savedObj.activeNickname;
+        if (savedObj.activeVedantNickname) appState.activeVedantNickname = savedObj.activeVedantNickname;
+        if (savedObj.activeMohimaNickname) appState.activeMohimaNickname = savedObj.activeMohimaNickname;
         if (savedObj.unlockedBadges) {
           savedObj.unlockedBadges.forEach(b => unlockedBadges.add(b));
           updateBadgesUI();
@@ -55,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const appState = new Proxy({
     caffeineLevel: 0,
-    activeNickname: "All Fiction"
+    activeVedantNickname: "All Fiction",
+    activeMohimaNickname: "Viöla_Odessǣ"
   }, {
     set(target, property, value) {
       target[property] = value;
@@ -66,16 +69,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function onStateChange(property, value) {
-    if (property === 'activeNickname') {
+    if (property === 'activeVedantNickname') {
       const displayEl = document.getElementById('vedantDisplayNickname');
       if (displayEl) displayEl.innerText = value;
       const inputEl = document.getElementById('dmInputField');
       if (inputEl) inputEl.placeholder = `Message ${value}...`;
       document.querySelectorAll('.typing-name').forEach(el => el.innerText = value);
     }
+    if (property === 'activeMohimaNickname') {
+      const displayEl = document.getElementById('mohimaDisplayNickname');
+      if (displayEl) displayEl.innerText = value;
+    }
     if (property === 'caffeineLevel') {
       updateCoffeeWidgetUI(value);
     }
+  }
+
+  // --------------------------------------------------------------------------
+  // TOAST NOTIFICATION ENGINE
+  // --------------------------------------------------------------------------
+  const toastContainer = document.getElementById('toastContainer');
+
+  function showToast(message, type = 'normal', icon = '✨') {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = `toast-message ${type === 'gold' ? 'gold' : ''}`;
+    toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.classList.add('toast-out');
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
   }
 
   // --------------------------------------------------------------------------
@@ -582,6 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else currentPreset = 'stars';
 
     particles.forEach(p => p.reset());
+    showToast(`Switched particle atmosphere to ${currentPreset.toUpperCase()} mode!`, 'normal', '✨');
   });
 
   // --------------------------------------------------------------------------
@@ -607,12 +633,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (badgeCountPill) badgeCountPill.innerText = count;
   }
 
+  // Initial Badge Count Sync on Load
+  updateBadgesUI();
+
   function unlockBadge(id) {
     if (!unlockedBadges.has(id)) {
       unlockedBadges.add(id);
       updateBadgesUI();
       playChimeSound();
       debouncedSaveStateToHash();
+
+      const badgeEl = document.getElementById(id);
+      const title = badgeEl ? badgeEl.getAttribute('data-title') : 'Achievement Unlocked';
+      showToast(`Achievement Unlocked: ${title}!`, 'gold', '👑');
     }
   }
 
@@ -634,12 +667,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let coffeeTapCooldown = false;
 
   function updateCoffeeWidgetUI(level) {
-    if (coffeeCountText) coffeeCountText.innerText = `${level}/4 Packets`;
+    if (coffeeCountText) {
+      if (level >= 4) {
+        coffeeCountText.innerText = `4/4 Packets (Max Caffeine Reached! ☕)`;
+      } else {
+        coffeeCountText.innerText = `${level}/4 Packets`;
+      }
+    }
     if (caffeineMeterFill) caffeineMeterFill.style.width = `${(level / 4) * 100}%`;
 
     coffeePacketBtns.forEach((btn, idx) => {
       if (idx < level) btn.classList.add('brewed');
       else btn.classList.remove('brewed');
+      btn.disabled = (level >= 4);
     });
 
     if (level >= 4) {
@@ -657,12 +697,14 @@ document.addEventListener('DOMContentLoaded', () => {
         appState.caffeineLevel += 1;
         playCoffeeBrewSound(appState.caffeineLevel);
         triggerCaffeineAura();
+        showToast(`☕ Coffee Packet ${appState.caffeineLevel} brewed! Caffeine level rising...`, 'normal', '☕');
         if (appState.caffeineLevel === 4) {
           playFanfareSound();
-          alert("☕ 4 Packets of Black Coffee Brewed!\nVedant: \"4 packets of black coffee in 1 cup?! Go get your beauty sleep mohtarma! 😭🖤\"");
+          showToast(`☕ 4 Packets Brewed! Vedant: "4 packets of black coffee in 1 cup?! Go sleep mohtarma!"`, 'gold', '☕');
         }
       } else {
         playPopSound();
+        showToast(`☕ Maximum caffeine limit reached (4/4 packets)!`, 'normal', '☕');
       }
     });
   });
@@ -735,9 +777,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function triggerConfetti() {
+    document.querySelectorAll('.confetti-piece').forEach(el => el.remove());
     const confettiCount = 80;
     for (let i = 0; i < confettiCount; i++) {
       const conf = document.createElement('div');
+      conf.className = 'confetti-piece';
       conf.style.position = 'fixed';
       conf.style.left = Math.random() * 100 + 'vw';
       conf.style.top = '-10px';
@@ -872,7 +916,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 11. LIVE IG DM CHAT SIMULATOR & NICKNAME DROPDOWN HANDLER
+  // 11. LIVE IG DM CHAT SIMULATOR & SEPARATE NICKNAME DROPDOWN HANDLERS
   // --------------------------------------------------------------------------
   const voiceNoteTrigger = document.getElementById('voiceNoteTrigger');
   const dmChatBody = document.getElementById('dmChatBody');
@@ -880,18 +924,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const dmInputForm = document.getElementById('dmInputForm');
   const typingIndicator = document.getElementById('typingIndicator');
   const starterChips = document.querySelectorAll('.starter-chip');
-  const nicknameSelect = document.getElementById('nicknameSelect');
+  const vedantNicknameSelect = document.getElementById('vedantNicknameSelect');
+  const mohimaNicknameSelect = document.getElementById('mohimaNicknameSelect');
 
-  if (nicknameSelect) {
-    nicknameSelect.addEventListener('change', (e) => {
+  if (vedantNicknameSelect) {
+    vedantNicknameSelect.addEventListener('change', (e) => {
       playPopSound();
-      appState.activeNickname = e.target.value;
+      appState.activeVedantNickname = e.target.value;
+      showToast(`Vedant's nickname updated: "${e.target.value}"`, 'gold', '👑');
+    });
+  }
+
+  if (mohimaNicknameSelect) {
+    mohimaNicknameSelect.addEventListener('change', (e) => {
+      playPopSound();
+      appState.activeMohimaNickname = e.target.value;
+      showToast(`Mohima's nickname updated: "${e.target.value}"`, 'gold', '👑');
     });
   }
 
   voiceNoteTrigger.addEventListener('click', () => {
     playVoiceNoteAudio();
-    alert("🎵 Playing Mohima's Hindi Voice Note (0:14)...\n\"Listen to my voice note 🙈 Also I'm not studying Rotational Motion today! 😭\"");
+    showToast("🎵 Playing Mohima's Hindi Voice Note (0:14)...", 'normal', '🎵');
   });
 
   // Short-Circuit NLP Heuristics (Levenshtein Distance + Regex)
@@ -993,6 +1047,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const flashcardBoxes = document.querySelectorAll('.flashcard-3d-box');
   const flashPrevBtn = document.getElementById('flashPrevBtn');
   const flashNextBtn = document.getElementById('flashNextBtn');
+  const flashcardCounter = document.getElementById('flashcardCounter');
+  const flashcardDots = document.querySelectorAll('.flashcard-dots .dot');
+  const flashcardsTrackWrapper = document.querySelector('.flashcards-track-wrapper');
   let currentCardIdx = 0;
 
   function updateFlashcardsVisibility() {
@@ -1003,6 +1060,47 @@ document.addEventListener('DOMContentLoaded', () => {
         box.style.display = 'none';
       }
     });
+
+    if (flashcardCounter) {
+      flashcardCounter.innerText = `CARD ${currentCardIdx + 1} OF ${flashcardBoxes.length}`;
+    }
+
+    flashcardDots.forEach((dot, idx) => {
+      if (idx === currentCardIdx) dot.classList.add('active');
+      else dot.classList.remove('active');
+    });
+  }
+
+  flashcardDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      playPopSound();
+      currentCardIdx = parseInt(dot.getAttribute('data-idx'));
+      updateFlashcardsVisibility();
+    });
+  });
+
+  // Mobile Touch Swipe Handling for Flashcards
+  let touchStartX = 0;
+  if (flashcardsTrackWrapper) {
+    flashcardsTrackWrapper.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    flashcardsTrackWrapper.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diffX = touchStartX - touchEndX;
+      if (Math.abs(diffX) > 45) {
+        if (diffX > 0) {
+          // Swipe left -> Next card
+          currentCardIdx = (currentCardIdx + 1) % flashcardBoxes.length;
+        } else {
+          // Swipe right -> Prev card
+          currentCardIdx = (currentCardIdx - 1 + flashcardBoxes.length) % flashcardBoxes.length;
+        }
+        playCardFlipSound();
+        updateFlashcardsVisibility();
+      }
+    }, { passive: true });
   }
 
   flashcardBoxes.forEach(box => {
@@ -1328,14 +1426,24 @@ document.addEventListener('DOMContentLoaded', () => {
     giftModal.classList.remove('active');
   });
 
+  function closeAllActiveModals() {
+    document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+      modal.classList.remove('active');
+    });
+    setSpatialMuffle(false);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeAllActiveModals();
+    }
+  });
+
   window.addEventListener('click', (e) => {
-    if (e.target === letterModal) letterModal.classList.remove('active');
-    if (e.target === giftModal) giftModal.classList.remove('active');
-    if (e.target === bookModal) bookModal.classList.remove('active');
-    if (e.target === quizRewardModal) quizRewardModal.classList.remove('active');
-    if (e.target === polaroidModal) polaroidModal.classList.remove('active');
-    if (e.target === easterEggModal) easterEggModal.classList.remove('active');
-    if (e.target === pigeonModal) pigeonModal.classList.remove('active');
+    if (e.target.classList.contains('modal-overlay')) {
+      e.target.classList.remove('active');
+      setSpatialMuffle(false);
+    }
   });
 
   // --------------------------------------------------------------------------
@@ -1349,7 +1457,7 @@ document.addEventListener('DOMContentLoaded', () => {
       playPopSound();
       const textToCopy = chip.getAttribute('data-prompt');
       navigator.clipboard.writeText(textToCopy).then(() => {
-        alert(`Prompt copied: "${textToCopy}"!\nOpening Vedant's Digital Twin...`);
+        showToast(`📋 Prompt copied: "${textToCopy}"! Opening Vedant's Digital Twin...`, 'gold', '🤖');
         window.open(gptUrl, '_blank');
       }).catch(() => {
         window.open(gptUrl, '_blank');
