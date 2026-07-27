@@ -229,6 +229,142 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 1. 🕊️ Carrier Pigeon Release Wings Flap Sound
+  function playPigeonFlapSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    for (let i = 0; i < 4; i++) {
+      setTimeout(() => {
+        try {
+          const osc = sfxCtx.createOscillator();
+          const gain = sfxCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(140 + Math.random() * 40, sfxCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(60, sfxCtx.currentTime + 0.06);
+
+          gain.gain.setValueAtTime(0.08, sfxCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.06);
+
+          osc.connect(gain);
+          gain.connect(biquadFilter);
+          osc.start();
+          osc.stop(sfxCtx.currentTime + 0.06);
+        } catch (e) {}
+      }, i * 70);
+    }
+  }
+
+  // 2. ☕ Black Coffee Pouring & Bubbling Sound
+  function playCoffeeBrewSound(packetNum) {
+    initSfxContext();
+    if (!sfxCtx) return;
+    const baseFreq = 300 + packetNum * 120;
+    try {
+      const osc = sfxCtx.createOscillator();
+      const gain = sfxCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(baseFreq, sfxCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq + 200, sfxCtx.currentTime + 0.15);
+
+      gain.gain.setValueAtTime(0.12, sfxCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.15);
+
+      osc.connect(gain);
+      gain.connect(biquadFilter);
+      osc.start();
+      osc.stop(sfxCtx.currentTime + 0.15);
+    } catch (e) {}
+  }
+
+  // 3. 📸 Vintage Polaroid Camera Shutter Snap Sound
+  function playCameraShutterSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    try {
+      const osc = sfxCtx.createOscillator();
+      const gain = sfxCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(800, sfxCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(120, sfxCtx.currentTime + 0.05);
+
+      gain.gain.setValueAtTime(0.15, sfxCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.05);
+
+      osc.connect(gain);
+      gain.connect(biquadFilter);
+      osc.start();
+      osc.stop(sfxCtx.currentTime + 0.05);
+    } catch (e) {}
+  }
+
+  // 4. 🎴 3D Banter Flashcard Flip Swish Sound
+  function playCardFlipSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    try {
+      const osc = sfxCtx.createOscillator();
+      const gain = sfxCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(180, sfxCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(320, sfxCtx.currentTime + 0.08);
+
+      gain.gain.setValueAtTime(0.09, sfxCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.08);
+
+      osc.connect(gain);
+      gain.connect(biquadFilter);
+      osc.start();
+      osc.stop(sfxCtx.currentTime + 0.08);
+    } catch (e) {}
+  }
+
+  // 5. 👻 Ghost Spirit Dissipation Whisper Sound
+  function playGhostDissipateSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    try {
+      const osc = sfxCtx.createOscillator();
+      const gain = sfxCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(520, sfxCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(260, sfxCtx.currentTime + 0.5);
+
+      gain.gain.setValueAtTime(0.001, sfxCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.08, sfxCtx.currentTime + 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.5);
+
+      osc.connect(gain);
+      gain.connect(biquadFilter);
+      osc.start();
+      osc.stop(sfxCtx.currentTime + 0.5);
+    } catch (e) {}
+  }
+
+  // 6. 🔮 Fortune Wheel Ticking Spin Sound
+  function playSpinWheelSound() {
+    initSfxContext();
+    if (!sfxCtx) return;
+    let ticks = 0;
+    const interval = setInterval(() => {
+      ticks++;
+      try {
+        const osc = sfxCtx.createOscillator();
+        const gain = sfxCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600 + (ticks % 3) * 100, sfxCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, sfxCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + 0.03);
+
+        osc.connect(gain);
+        gain.connect(biquadFilter);
+        osc.start();
+        osc.stop(sfxCtx.currentTime + 0.03);
+      } catch (e) {}
+
+      if (ticks >= 10) clearInterval(interval);
+    }, 90);
+  }
+
   // Ambient Lo-Fi & Rain Sound Synthesizer for Top Control Bar
   const musicToggleBtn = document.getElementById('musicToggleBtn');
   let isAmbientPlaying = false;
@@ -517,14 +653,16 @@ document.addEventListener('DOMContentLoaded', () => {
       coffeeTapCooldown = true;
       setTimeout(() => coffeeTapCooldown = false, 300);
 
-      playPopSound();
       if (appState.caffeineLevel < 4) {
         appState.caffeineLevel += 1;
+        playCoffeeBrewSound(appState.caffeineLevel);
         triggerCaffeineAura();
         if (appState.caffeineLevel === 4) {
           playFanfareSound();
           alert("☕ 4 Packets of Black Coffee Brewed!\nVedant: \"4 packets of black coffee in 1 cup?! Go get your beauty sleep mohtarma! 😭🖤\"");
         }
+      } else {
+        playPopSound();
       }
     });
   });
@@ -537,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closePigeonBtn = document.getElementById('closePigeonBtn');
 
   pigeonBtn.addEventListener('click', () => {
-    playBookSound();
+    playPigeonFlapSound();
     setSpatialMuffle(true);
     pigeonModal.classList.add('active');
   });
@@ -869,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   flashcardBoxes.forEach(box => {
     box.addEventListener('click', () => {
-      playBookSound();
+      playCardFlipSound();
       box.classList.toggle('flipped');
     });
   });
@@ -902,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   polaroidCards.forEach(card => {
     card.addEventListener('click', () => {
-      playBookSound();
+      playCameraShutterSound();
       setSpatialMuffle(true);
       const title = card.getAttribute('data-title');
       const note = card.getAttribute('data-note');
@@ -920,6 +1058,16 @@ document.addEventListener('DOMContentLoaded', () => {
     setSpatialMuffle(false);
     polaroidModal.classList.remove('active');
   });
+
+  const ghostMirrorCard = document.getElementById('ghostMirrorCard');
+  if (ghostMirrorCard) {
+    ghostMirrorCard.addEventListener('mouseenter', () => {
+      playGhostDissipateSound();
+    });
+    ghostMirrorCard.addEventListener('touchstart', () => {
+      playGhostDissipateSound();
+    });
+  }
 
   // --------------------------------------------------------------------------
   // 14. EXPANDED 6-QUESTION QUIZ MINI-GAME ENGINE
@@ -1069,7 +1217,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   spinFortuneBtn.addEventListener('click', () => {
-    playPopSound();
+    playSpinWheelSound();
     fortuneResult.innerHTML = '🔮 <em>Consulting the 700-year-old dark romance archives...</em>';
     spinFortuneBtn.disabled = true;
 
