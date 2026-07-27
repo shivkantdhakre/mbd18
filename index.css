@@ -1319,54 +1319,329 @@ body {
   color: var(--accent-gold);
 }
 
-/* Ghost Covered Mirror Card */
-.ghost-mirror-container {
-  margin: 30px auto;
+/* Royal Victorian Princess Vanity Mirror */
+.victorian-mirror-pedestal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 40px auto;
   max-width: 480px;
 }
 
-.ghost-mirror-card {
-  position: relative;
-  background: linear-gradient(135deg, #1b0a20, #36143f);
-  border: 2px solid #5a2846;
-  border-radius: 20px;
-  padding: 30px;
-  text-align: center;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  backface-visibility: hidden;
-}
-
-.dupatta-cover-overlay {
-  background: rgba(107, 29, 61, 0.85);
-  padding: 16px;
-  border-radius: 12px;
-  color: var(--text-main);
-  font-size: 0.95rem;
-  transition: all 1.5s ease;
-}
-
-.ghost-spirit-reflection {
+/* Animated Gothic Candle Sconces */
+.mirror-sconce {
   position: absolute;
-  top: 50%;
+  top: 45%;
+  font-size: 2.2rem;
+  z-index: 5;
+  filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.8));
+  animation: flickerSconce 3s ease-in-out infinite alternate;
+}
+
+.sconce-left { left: -35px; }
+.sconce-right { right: -35px; }
+
+@keyframes flickerSconce {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.7)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 117, 160, 0.95)); transform: scale(1.1); }
+}
+
+@media (max-width: 500px) {
+  .mirror-sconce { font-size: 1.6rem; }
+  .sconce-left { left: -15px; }
+  .sconce-right { right: -15px; }
+  .ghost-mirror-card.victorian-princess-mirror {
+    width: 310px;
+    height: 400px;
+  }
+}
+
+.ghost-mirror-card.victorian-princess-mirror {
+  position: relative;
+  width: 440px;
+  height: 550px;
+  border-radius: 200px 200px 32px 32px;
+  overflow: hidden;
+  border: 8px solid #f3c64c;
+  background: radial-gradient(circle at center, #3c094a 0%, #0e0214 100%);
+  box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.4), 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(255, 215, 0, 0.35);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.6s ease;
+  z-index: 2;
+}
+
+.ghost-mirror-card.victorian-princess-mirror:hover {
+  transform: translateY(-10px) rotateX(4deg) scale(1.02);
+  box-shadow: inset 0 0 40px rgba(255, 215, 0, 0.6), 0 30px 75px rgba(0, 0, 0, 0.95), 0 0 60px rgba(255, 215, 0, 0.5);
+}
+
+.victorian-crest-header {
+  position: absolute;
+  top: -42px;
   left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.2rem;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 6;
+}
+
+.royal-crown-crest {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8));
+  animation: pulseCrest 2.5s ease-in-out infinite;
+}
+
+.royal-filigree-side {
+  font-size: 1.4rem;
   color: var(--accent-gold);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+.pearl-bead-border {
+  position: absolute;
+  inset: 12px;
+  border: 4px dotted rgba(255, 255, 255, 0.7);
+  border-radius: 185px 185px 22px 22px;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.victorian-mirror-base {
+  width: 180px;
+  height: 24px;
+  background: linear-gradient(135deg, #f3c64c, #966f1d, #f3c64c);
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  margin-top: -12px;
+  z-index: 1;
+  position: relative;
+}
+
+.victorian-mirror-base::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 16px;
+  background: linear-gradient(135deg, #b8860b, #e6c65b, #8a6200);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
+}
+
+.princess-sparkle-orb {
+  position: absolute;
+  font-size: 1.5rem;
+  z-index: 3;
+  pointer-events: none;
+  animation: floatOrb 5s ease-in-out infinite alternate;
+}
+
+.orb-1 { top: 25%; left: 20%; }
+.orb-2 { bottom: 25%; right: 20%; animation-delay: -2.5s; }
+
+@keyframes floatOrb {
+  0% { transform: translateY(0) scale(0.9); opacity: 0.5; }
+  100% { transform: translateY(-20px) scale(1.3); opacity: 0.9; }
+}
+
+.gold-tassel-rope {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: repeating-linear-gradient(45deg, var(--accent-gold) 0px, var(--accent-gold) 12px, #8a6200 12px, #8a6200 24px);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+  z-index: 6;
+}
+
+.mirror-glass-surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-shimmer-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 45%, rgba(255, 117, 160, 0.15) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.mirror-reflection-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.9) contrast(1.15);
+  transform: scale(1.06);
+  transition: all 0.9s ease;
+}
+
+.mirror-reflection-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 3, 18, 0.05) 0%, rgba(12, 3, 18, 0.88) 65%, rgba(12, 3, 18, 0.98) 100%);
+  padding: 30px 25px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  z-index: 3;
+}
+
+.ghost-spirit-tag {
+  background: rgba(255, 117, 160, 0.25);
+  border: 1px solid var(--accent-rose);
+  color: var(--accent-rose);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  box-shadow: 0 0 15px rgba(255, 117, 160, 0.3);
+}
+
+.mirror-roast-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.94rem;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin-bottom: 12px;
+  font-style: italic;
+  max-width: 340px;
+}
+
+.shuffle-mirror-btn {
+  background: linear-gradient(135deg, var(--accent-gold), #e6b800);
+  color: #0c0214;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+  transition: all 0.3s ease;
+  margin-bottom: 6px;
+  z-index: 10;
+}
+
+.shuffle-mirror-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.7);
+}
+
+/* Velvet & Silk Dupatta Drape Layer */
+.dupatta-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(110, 14, 44, 0.98) 0%, rgba(45, 4, 20, 0.96) 100%);
+  backdrop-filter: blur(16px);
+  z-index: 5;
+  padding: 35px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dupatta-pattern-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 215, 0, 0.2) 1.2px, transparent 1.2px);
+  background-size: 18px 18px;
+  opacity: 0.7;
+}
+
+.dupatta-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dupatta-wax-seal {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--accent-gold), #b8860b);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+  border: 2px solid #fff;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+.seal-icon {
+  font-size: 1.8rem;
+}
+
+.dupatta-title {
+  font-size: 1.45rem;
+  color: var(--accent-gold);
+  font-family: 'Playfair Display', serif;
+}
+
+.dupatta-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.lift-dupatta-btn {
+  background: linear-gradient(135deg, var(--accent-rose), #9d4edd);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 117, 160, 0.5);
+  transition: all 0.3s ease;
+}
+
+.lift-dupatta-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 25px rgba(255, 117, 160, 0.7);
+}
+
+/* Hover & Active Lift State */
+.ghost-mirror-card:hover .dupatta-cover-overlay,
+.ghost-mirror-card.uncovered .dupatta-cover-overlay {
+  transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
-  transition: all 1.5s ease;
 }
 
-.ghost-mirror-card:hover .dupatta-cover-overlay {
-  filter: blur(14px);
-  opacity: 0;
-  transform: scale(1.15);
+.ghost-mirror-card:hover .mirror-reflection-img,
+.ghost-mirror-card.uncovered .mirror-reflection-img {
+  transform: scale(1);
+  filter: brightness(1) contrast(1.1);
 }
 
-.ghost-mirror-card:hover .ghost-spirit-reflection {
-  opacity: 1;
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 /* 3D Banter Memory Flashcards Carousel */

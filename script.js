@@ -1158,13 +1158,119 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const ghostMirrorCard = document.getElementById('ghostMirrorCard');
+  const mirrorReflectionImg = document.getElementById('mirrorReflectionImg');
+  const mirrorSpiritTag = document.getElementById('mirrorSpiritTag');
+  const mirrorRoastText = document.getElementById('mirrorRoastText');
+  const liftDupattaBtn = document.getElementById('liftDupattaBtn');
+  const shuffleMirrorBtn = document.getElementById('shuffleMirrorBtn');
+
+  const mirrorGallery = [
+    {
+      img: 'mohima_blue_mirror.jpg',
+      tag: '<i class="fa-solid fa-crown"></i> HRH Royal Blue Princess (1/4)',
+      roast: '"700 saal purani aatma ho aap, toh ayna cover kyu karti ho? Ghosts won\'t eat you, you are the ghost chief! 😂🤌"'
+    },
+    {
+      img: 'mohima_reading.jpg',
+      tag: '<i class="fa-solid fa-book"></i> Twisted Games Reader (2/4)',
+      roast: '"A-Levels Physics mock 2 din door hai aur madam Twisted Games padhne main busy hain! Rhys Larsen fictional hai, real life main main hi milunga 😭🖤"'
+    },
+    {
+      img: 'mohima_floral_kurti.jpg',
+      tag: '<i class="fa-solid fa-seedling"></i> Desi Academia President (3/4)',
+      roast: '"Books in background, floral kurti in front... full Desi Dark Academia vibe! Itni pyaari lagoge toh men-hater club executive president kaun banega? 😂💕"'
+    },
+    {
+      img: 'mohima_pink_kurti.jpg',
+      tag: '<i class="fa-solid fa-heart"></i> Cute Little Princess (4/4)',
+      roast: '"Ur accent is cute, but ur Hindi voice and these mirror selfies are even cuter 🤌 Permanently booked in my heart, zero refund policy! 🙈👑✨"'
+    }
+  ];
+
+  let currentMirrorIdx = 0;
+  let isGhostMirrorRevealed = false;
+
+  function cycleMirrorPhoto() {
+    currentMirrorIdx = (currentMirrorIdx + 1) % mirrorGallery.length;
+    const item = mirrorGallery[currentMirrorIdx];
+
+    if (mirrorReflectionImg) mirrorReflectionImg.src = item.img;
+    if (mirrorSpiritTag) mirrorSpiritTag.innerHTML = item.tag;
+    if (mirrorRoastText) mirrorRoastText.innerText = item.roast;
+    if (shuffleMirrorBtn) shuffleMirrorBtn.innerHTML = `<i class="fa-solid fa-rotate"></i> Next Reflection (${currentMirrorIdx + 1}/4) 📸`;
+
+    playCameraShutterSound();
+    showToast(`Switched Reflection (${currentMirrorIdx + 1}/4)!`, 'normal', '📸');
+  }
+
+  function liftDupattaCover() {
+    playGhostDissipateSound();
+    unlockBadge('badge7');
+    ghostMirrorCard.classList.add('uncovered');
+    if (!isGhostMirrorRevealed) {
+      isGhostMirrorRevealed = true;
+      showToast("👻 Dupatta lifted! Royal Victorian Mirror unlocked!", "gold", "🪞");
+    }
+  }
+
   if (ghostMirrorCard) {
-    ghostMirrorCard.addEventListener('mouseenter', () => {
-      playGhostDissipateSound();
+    ghostMirrorCard.addEventListener('click', (e) => {
+      if (e.target.closest('#liftDupattaBtn') || !ghostMirrorCard.classList.contains('uncovered')) {
+        liftDupattaCover();
+      } else {
+        cycleMirrorPhoto();
+      }
     });
-    ghostMirrorCard.addEventListener('touchstart', () => {
-      playGhostDissipateSound();
+
+    if (shuffleMirrorBtn) {
+      shuffleMirrorBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cycleMirrorPhoto();
+      });
+    }
+
+    if (liftDupattaBtn) {
+      liftDupattaBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        liftDupattaCover();
+      });
+    }
+
+    // 3D Parallax Mouse Tracking Tilt Effect
+    ghostMirrorCard.addEventListener('mousemove', (e) => {
+      const rect = ghostMirrorCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -8;
+      const rotateY = ((x - centerX) / centerX) * 8;
+
+      ghostMirrorCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
     });
+
+    ghostMirrorCard.addEventListener('mouseleave', () => {
+      ghostMirrorCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+    });
+
+    // IntersectionObserver to auto-reset Ghost Mirror when user scrolls to next section
+    const mirrorObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          ghostMirrorCard.classList.remove('uncovered');
+          ghostMirrorCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+          currentMirrorIdx = 0;
+          const item = mirrorGallery[0];
+          if (mirrorReflectionImg) mirrorReflectionImg.src = item.img;
+          if (mirrorSpiritTag) mirrorSpiritTag.innerHTML = item.tag;
+          if (mirrorRoastText) mirrorRoastText.innerText = item.roast;
+          if (shuffleMirrorBtn) shuffleMirrorBtn.innerHTML = `<i class="fa-solid fa-rotate"></i> Next Reflection (1/4) 📸`;
+        }
+      });
+    }, { threshold: 0.05 });
+
+    mirrorObserver.observe(ghostMirrorCard);
   }
 
   // --------------------------------------------------------------------------
