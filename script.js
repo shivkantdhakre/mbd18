@@ -1919,6 +1919,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function drawHeartPetal(ctx, x, y, size) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + size * 0.3);
+    ctx.bezierCurveTo(x, y, x - size * 0.55, y - size * 0.4, x - size * 0.55, y + size * 0.15);
+    ctx.bezierCurveTo(x - size * 0.55, y + size * 0.45, x, y + size * 0.75, x, y + size * 0.95);
+    ctx.bezierCurveTo(x, y + size * 0.75, x + size * 0.55, y + size * 0.45, x + size * 0.55, y + size * 0.15);
+    ctx.bezierCurveTo(x + size * 0.55, y - size * 0.4, x, y, x, y + size * 0.3);
+    ctx.closePath();
+    ctx.fill();
+  }
+
   function renderVaultPetals() {
     if (!petalCtx || !vaultPetalCanvas) return;
     petalCtx.clearRect(0, 0, vaultPetalCanvas.width, vaultPetalCanvas.height);
@@ -1937,9 +1948,7 @@ document.addEventListener('DOMContentLoaded', () => {
       petalCtx.translate(p.x, p.y);
       petalCtx.rotate((p.rotation * Math.PI) / 180);
       petalCtx.fillStyle = p.color;
-      petalCtx.beginPath();
-      petalCtx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2);
-      petalCtx.fill();
+      drawHeartPetal(petalCtx, 0, 0, p.size);
       petalCtx.restore();
     });
 
@@ -2065,7 +2074,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fullLetterHTML = `
     <div class="letter-parchment">
       <div class="letter-top-seal">✦ GIRLFRIEND'S DAY SPECIAL ✦</div>
-      <h3 class="letter-salutation">accha 🙂</h3>
+      <h3 class="letter-salutation">muuuuaaaaaa😘</h3>
       <div class="letter-text-body">
         <p>happy girlfriend's day to my favorite 700-year-old skeleton princess, Wattpad dark romance queen, and men-hater club executive president 👑🌹</p>
         <p>ik you're probably sitting in Bangladesh right now, drinking your 4th cup of black coffee, stressing over A-Levels Physics and complaining ki mom ne phir se chappal se maara... but take a pause for a second, mohtarma.</p>
@@ -2322,21 +2331,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Mauve Shade Selector Interactive Easter Egg
-  function setMauveShade(colorHex, name) {
+  // Mauve Shade Selector Interactive Easter Egg with Kisses Burst
+  function spawnKissesBurst(e, colorHex, name) {
+    playRoseBloomSound();
     playPopSound();
-    document.querySelectorAll('.shade-btn').forEach(btn => btn.classList.remove('active'));
-    if (name === 'Mauve Rose') shadeMauveRoseBtn.classList.add('active');
-    if (name === 'Deep Mauve Berry') shadeMauveBerryBtn.classList.add('active');
-    if (name === 'Royal Crimson') shadeRoyalCrimsonBtn.classList.add('active');
 
-    secretVaultModal.style.boxShadow = `inset 0 0 60px ${colorHex}`;
-    showToast(`💄 Switched ambient aura to ${name} (${colorHex})!`, 'gold', '✨');
+    if (e && e.currentTarget) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const kissEmojis = ['💋', '😘', '💖', '💋', '✨', '😘', '💋'];
+      
+      kissEmojis.forEach((emoji, idx) => {
+        const el = document.createElement('div');
+        el.className = 'kiss-particle';
+        el.innerText = emoji;
+        
+        const offsetPct = (idx / (kissEmojis.length - 1)) * rect.width;
+        const xPos = rect.left + offsetPct + (Math.random() * 20 - 10);
+        
+        el.style.left = `${xPos}px`;
+        el.style.top = `${rect.top - 10}px`;
+        el.style.fontSize = `${Math.random() * 0.5 + 1.3}rem`;
+        el.style.animationDelay = `${idx * 0.12}s`;
+        el.style.setProperty('--drift-x', `${(Math.random() - 0.5) * 140}px`);
+
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2200);
+      });
+    }
+
+    document.querySelectorAll('.shade-btn').forEach(btn => btn.classList.remove('active'));
+    if (name === 'Mauve Rose' && shadeMauveRoseBtn) shadeMauveRoseBtn.classList.add('active');
+    if (name === 'Deep Mauve Berry' && shadeMauveBerryBtn) shadeMauveBerryBtn.classList.add('active');
+    if (name === 'Royal Crimson' && shadeRoyalCrimsonBtn) shadeRoyalCrimsonBtn.classList.add('active');
+
+    if (secretVaultModal) {
+      secretVaultModal.style.boxShadow = `inset 0 0 70px ${colorHex}`;
+    }
+    showToast(`💄 Switched ambient aura to ${name} (${colorHex})! 💋`, 'gold', '😘');
   }
 
-  if (shadeMauveRoseBtn) shadeMauveRoseBtn.addEventListener('click', () => setMauveShade('#7C3E59', 'Mauve Rose'));
-  if (shadeMauveBerryBtn) shadeMauveBerryBtn.addEventListener('click', () => setMauveShade('#521E36', 'Deep Mauve Berry'));
-  if (shadeRoyalCrimsonBtn) shadeRoyalCrimsonBtn.addEventListener('click', () => setMauveShade('#9E1B32', 'Royal Crimson'));
+  if (shadeMauveRoseBtn) shadeMauveRoseBtn.addEventListener('click', (e) => spawnKissesBurst(e, '#7C3E59', 'Mauve Rose'));
+  if (shadeMauveBerryBtn) shadeMauveBerryBtn.addEventListener('click', (e) => spawnKissesBurst(e, '#521E36', 'Deep Mauve Berry'));
+  if (shadeRoyalCrimsonBtn) shadeRoyalCrimsonBtn.addEventListener('click', (e) => spawnKissesBurst(e, '#9E1B32', 'Royal Crimson'));
 
   // Catch Floating Petals Interaction (Badge Click + Canvas Hit Testing)
   function catchPetalSuccess() {
