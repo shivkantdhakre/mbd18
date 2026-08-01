@@ -104,6 +104,214 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
+  // DYNAMIC BACKGROUND PARTICLE ENGINE (STARS 💫 / PETALS 🌸 / RAIN 🌧️ / 3D PETALS 🌹 / BOKEH ✨)
+  // --------------------------------------------------------------------------
+  const bgCanvas = document.getElementById('canvas-bg');
+  const presetBtn = document.getElementById('presetBtn');
+
+  if (bgCanvas) {
+    const bgCtx = bgCanvas.getContext('2d');
+    let bgWidth = bgCanvas.width = window.innerWidth;
+    let bgHeight = bgCanvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      bgWidth = bgCanvas.width = window.innerWidth;
+      bgHeight = bgCanvas.height = window.innerHeight;
+    });
+
+    const modes = ['stars', 'petals', 'rain', 'rose_petals', 'glowing_bokeh'];
+    let currentModeIdx = 0;
+    let bgParticles = [];
+
+    class BgParticle {
+      constructor(mode) {
+        this.reset(mode);
+      }
+
+      reset(mode) {
+        this.mode = mode;
+        this.x = Math.random() * bgWidth;
+        this.y = Math.random() * bgHeight;
+
+        if (mode === 'stars') {
+          this.size = Math.random() * 2.5 + 1;
+          this.speedY = Math.random() * 1.2 + 0.3;
+          this.speedX = (Math.random() - 0.5) * 0.4;
+          this.opacity = Math.random() * 0.7 + 0.3;
+          this.color = Math.random() > 0.4 ? '#ff75a0' : '#ffd700';
+        } else if (mode === 'petals') {
+          this.size = Math.random() * 6 + 5;
+          this.speedY = Math.random() * 0.9 + 0.5;
+          this.speedX = Math.random() * 0.6 - 0.3;
+          this.rotation = Math.random() * Math.PI * 2;
+          this.rotSpeed = Math.random() * 0.02 - 0.01;
+          this.swayAngle = Math.random() * Math.PI * 2;
+          this.swaySpeed = 0.02 + Math.random() * 0.02;
+          this.opacity = Math.random() * 0.55 + 0.35;
+          this.color = ['#ffb7c5', '#ff75a0', '#ff85a1', '#ffd1dc', '#fff0f5'][Math.floor(Math.random() * 5)];
+        } else if (mode === 'rain') {
+          this.length = Math.random() * 22 + 12;
+          this.speedY = Math.random() * 8 + 5;
+          this.speedX = -0.5;
+          this.opacity = Math.random() * 0.4 + 0.15;
+          this.color = '#a0c4ff';
+        } else if (mode === 'rose_petals') {
+          this.size = Math.random() * 8 + 6;
+          this.speedY = Math.random() * 1.4 + 0.6;
+          this.speedX = Math.random() * 0.8 - 0.4;
+          this.rotation = Math.random() * Math.PI * 2;
+          this.rotSpeed = Math.random() * 0.03 - 0.015;
+          this.swayAngle = Math.random() * Math.PI * 2;
+          this.swaySpeed = 0.02 + Math.random() * 0.02;
+          this.opacity = Math.random() * 0.7 + 0.3;
+          this.color = ['#ff75a0', '#e63946', '#b30024', '#ff85a1'][Math.floor(Math.random() * 4)];
+        } else if (mode === 'glowing_bokeh') {
+          this.size = Math.random() * 18 + 8;
+          this.speedY = -(Math.random() * 0.6 + 0.2);
+          this.speedX = (Math.random() - 0.5) * 0.4;
+          this.opacity = Math.random() * 0.35 + 0.1;
+          this.pulseSpeed = 0.02 + Math.random() * 0.02;
+          this.pulseAngle = Math.random() * Math.PI * 2;
+          this.color = ['#ffd700', '#ff75a0', '#9d4edd', '#ffffff'][Math.floor(Math.random() * 4)];
+        }
+      }
+
+      update() {
+        if (this.mode === 'stars') {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          if (this.y > bgHeight) {
+            this.y = 0;
+            this.x = Math.random() * bgWidth;
+          }
+        } else if (this.mode === 'petals') {
+          this.y += this.speedY;
+          this.swayAngle += this.swaySpeed;
+          this.x += Math.sin(this.swayAngle) * 1.2 + this.speedX;
+          this.rotation += this.rotSpeed;
+          if (this.y > bgHeight + 20) {
+            this.y = -20;
+            this.x = Math.random() * bgWidth;
+          }
+        } else if (this.mode === 'rain') {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          if (this.y > bgHeight + 30) {
+            this.y = -30;
+            this.x = Math.random() * (bgWidth + 100);
+          }
+        } else if (this.mode === 'rose_petals') {
+          this.y += this.speedY;
+          this.swayAngle += this.swaySpeed;
+          this.x += Math.sin(this.swayAngle) * 0.8 + this.speedX;
+          this.rotation += this.rotSpeed;
+          if (this.y > bgHeight + 20) {
+            this.y = -20;
+            this.x = Math.random() * bgWidth;
+          }
+        } else if (this.mode === 'glowing_bokeh') {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          this.pulseAngle += this.pulseSpeed;
+          if (this.y < -30) {
+            this.y = bgHeight + 30;
+            this.x = Math.random() * bgWidth;
+          }
+        }
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+
+        if (this.mode === 'stars') {
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.mode === 'petals') {
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = this.color;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(-this.size * 0.8, -this.size * 1.2, -this.size * 1.2, this.size * 0.6, 0, this.size * 1.3);
+          ctx.bezierCurveTo(this.size * 1.2, this.size * 0.6, this.size * 0.8, -this.size * 1.2, 0, 0);
+          ctx.fill();
+        } else if (this.mode === 'rain') {
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.x + this.speedX, this.y + 14);
+          ctx.stroke();
+        } else if (this.mode === 'rose_petals') {
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(-this.size, -this.size * 1.5, -this.size * 1.5, this.size * 0.5, 0, this.size * 1.5);
+          ctx.bezierCurveTo(this.size * 1.5, this.size * 0.5, this.size, -this.size * 1.5, 0, 0);
+          ctx.fill();
+        } else if (this.mode === 'glowing_bokeh') {
+          const currentSize = this.size + Math.sin(this.pulseAngle) * 3;
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, Math.max(2, currentSize), 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    function initBgParticles(mode) {
+      bgParticles = [];
+      const count = mode === 'rain' ? 100 : (mode === 'glowing_bokeh' ? 35 : 75);
+      for (let i = 0; i < count; i++) {
+        bgParticles.push(new BgParticle(mode));
+      }
+    }
+
+    function renderBgLoop() {
+      bgCtx.clearRect(0, 0, bgWidth, bgHeight);
+      for (let i = 0; i < bgParticles.length; i++) {
+        bgParticles[i].update();
+        bgParticles[i].draw(bgCtx);
+      }
+      requestAnimationFrame(renderBgLoop);
+    }
+
+    initBgParticles(modes[currentModeIdx]);
+    requestAnimationFrame(renderBgLoop);
+
+    if (presetBtn) {
+      presetBtn.addEventListener('click', () => {
+        playPopSound();
+        currentModeIdx = (currentModeIdx + 1) % modes.length;
+        const newMode = modes[currentModeIdx];
+        initBgParticles(newMode);
+
+        const modeNames = {
+          stars: "Midnight Starlight 💫",
+          petals: "Soft Floating Petals 🌸",
+          rain: "Stormy Rain Streaks 🌧️",
+          rose_petals: "3D Velvet Rose Petals 🌹",
+          glowing_bokeh: "Glowing Golden Bokeh ✨"
+        };
+        showToast(`Particle Preset: ${modeNames[newMode]}`, "gold", "✨");
+      });
+    }
+  }
+
+  // --------------------------------------------------------------------------
   // 2. WEB AUDIO API SYNTHESIZER WITH SPATIAL BIQUAD FILTERING
   // --------------------------------------------------------------------------
   let sfxCtx = null;
@@ -514,103 +722,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 5. CANVAS PARTICLE RENDERER
-  // --------------------------------------------------------------------------
-  const canvas = document.getElementById('canvas-bg');
-  const ctx = canvas.getContext('2d');
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-
-  let currentPreset = 'stars';
-  const particles = [];
-  const particleCount = 80;
-
-  class Particle {
-    constructor() { this.reset(); }
-
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.size = Math.random() * 2.5 + 1;
-      this.speedY = Math.random() * 1.5 + 0.5;
-      this.speedX = (Math.random() - 0.5) * 0.4;
-      this.opacity = Math.random() * 0.7 + 0.3;
-      this.color = Math.random() > 0.4 ? '#ff75a0' : '#ffd700';
-
-      if (currentPreset === 'rain') {
-        this.speedY = Math.random() * 6 + 4;
-        this.speedX = -0.5;
-        this.color = '#a0c4ff';
-        this.size = Math.random() * 1.5 + 0.5;
-      } else if (currentPreset === 'petals') {
-        this.speedY = Math.random() * 1.2 + 0.4;
-        this.speedX = Math.sin(Math.random() * Math.PI) * 1.2;
-        this.color = '#ff75a0';
-        this.size = Math.random() * 3 + 2;
-      }
-    }
-
-    update() {
-      this.y += this.speedY;
-      this.x += this.speedX;
-      if (this.y > height) {
-        this.y = 0;
-        this.x = Math.random() * width;
-      }
-    }
-
-    draw() {
-      ctx.beginPath();
-      if (currentPreset === 'rain') {
-        ctx.strokeStyle = this.color;
-        ctx.lineWidth = this.size;
-        ctx.globalAlpha = this.opacity;
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.x + this.speedX, this.y + 12);
-        ctx.stroke();
-      } else {
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.opacity;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.color;
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1.0;
-    }
-  }
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
-
-  function animateParticles() {
-    ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
-    requestAnimationFrame(animateParticles);
-  }
-  animateParticles();
-
-  const presetBtn = document.getElementById('presetBtn');
-  presetBtn.addEventListener('click', () => {
-    playPopSound();
-    if (currentPreset === 'stars') currentPreset = 'rain';
-    else if (currentPreset === 'rain') currentPreset = 'petals';
-    else currentPreset = 'stars';
-
-    particles.forEach(p => p.reset());
-    showToast(`Switched particle atmosphere to ${currentPreset.toUpperCase()} mode!`, 'normal', '✨');
-  });
-
-  // --------------------------------------------------------------------------
   // 6. ACHIEVEMENTS & BADGES SYSTEM
   // --------------------------------------------------------------------------
   const badgeToggleBtn = document.getElementById('badgeToggleBtn');
@@ -767,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
       triggerSmokePuffs();
       cakeStatus.innerHTML = '<i class="fa-solid fa-star"></i> Wish granted! 18th Birthday Candles Extinguished! 🎉';
       cakeStatus.style.color = '#ff75a0';
-      triggerConfetti();
+      triggerCelebration();
       unlockBadge('badge2');
     } else {
       playPopSound();
@@ -776,30 +887,171 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function triggerConfetti() {
-    document.querySelectorAll('.confetti-piece').forEach(el => el.remove());
-    const confettiCount = 80;
-    for (let i = 0; i < confettiCount; i++) {
-      const conf = document.createElement('div');
-      conf.className = 'confetti-piece';
-      conf.style.position = 'fixed';
-      conf.style.left = Math.random() * 100 + 'vw';
-      conf.style.top = '-10px';
-      conf.style.width = Math.random() * 10 + 6 + 'px';
-      conf.style.height = Math.random() * 10 + 6 + 'px';
-      conf.style.backgroundColor = ['#ff75a0', '#ffd700', '#9d4edd', '#ffffff', '#ff4500'][Math.floor(Math.random() * 5)];
-      conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-      conf.style.zIndex = '9999';
-      conf.style.pointerEvents = 'none';
-      conf.style.transition = 'transform 3.2s ease-out, opacity 3.2s ease-out';
-      document.body.appendChild(conf);
+  // --------------------------------------------------------------------------
+  // 9. HIGH-PERFORMANCE 60FPS PHYSICS CELEBRATION ENGINE
+  // --------------------------------------------------------------------------
+  const celCanvas = document.getElementById('celebrationCanvas');
+  let celCtx = null;
+  let celParticles = [];
+  let celAnimFrame = null;
+  let celEmitTimeout = null;
+  let isEmittingCelebration = false;
 
-      setTimeout(() => {
-        conf.style.transform = `translate(${(Math.random() - 0.5) * 400}px, ${window.innerHeight + 50}px) rotate(${Math.random() * 720}deg)`;
-        conf.style.opacity = '0';
-      }, 50);
+  if (celCanvas) {
+    celCtx = celCanvas.getContext('2d');
+    function resizeCelCanvas() {
+      celCanvas.width = window.innerWidth;
+      celCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCelCanvas);
+    resizeCelCanvas();
+  }
 
-      setTimeout(() => conf.remove(), 3400);
+  class CelebrationParticle {
+    constructor() {
+      this.reset();
+    }
+
+    reset() {
+      if (!celCanvas) return;
+      this.x = celCanvas.width * (0.15 + Math.random() * 0.7);
+      this.y = celCanvas.height * (0.4 + Math.random() * 0.4);
+      
+      // Velocity burst upward and outward
+      const angle = (Math.random() - 0.5) * Math.PI * 0.85 - Math.PI / 2;
+      const speed = Math.random() * 14 + 6;
+      this.speedX = Math.cos(angle) * speed;
+      this.speedY = Math.sin(angle) * speed;
+      
+      this.gravity = Math.random() * 0.18 + 0.12;
+      this.drag = 0.982;
+      
+      this.size = Math.random() * 12 + 6;
+      this.opacity = 1.0;
+      this.decay = Math.random() * 0.008 + 0.004;
+
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotSpeed = (Math.random() - 0.5) * 0.12;
+      this.flipX = Math.random() * Math.PI;
+      this.flipSpeed = Math.random() * 0.08 + 0.03;
+
+      this.swaySpeed = Math.random() * 0.05 + 0.02;
+      this.swayOffset = Math.random() * Math.PI * 2;
+
+      // Particle Type Distribution: Petals, Golden Foil, Sparkles, Bokeh
+      const r = Math.random();
+      if (r < 0.40) {
+        this.type = 'petal';
+        const colors = ['#ff75a0', '#ff4d6d', '#b30024', '#e63946', '#ff85a1', '#d90429'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      } else if (r < 0.70) {
+        this.type = 'foil';
+        const foilColors = ['#ffd700', '#ffb703', '#fff07c', '#e5a93c', '#ffffff'];
+        this.color = foilColors[Math.floor(Math.random() * foilColors.length)];
+      } else if (r < 0.88) {
+        this.type = 'sparkle';
+        this.color = '#fff07c';
+      } else {
+        this.type = 'bokeh';
+        this.color = Math.random() > 0.5 ? 'rgba(255, 215, 0, 0.45)' : 'rgba(255, 117, 160, 0.45)';
+      }
+    }
+
+    update() {
+      this.swayOffset += this.swaySpeed;
+      this.speedX *= this.drag;
+      this.speedY += this.gravity;
+      
+      this.x += this.speedX + Math.sin(this.swayOffset) * 1.5;
+      this.y += this.speedY;
+      
+      this.rotation += this.rotSpeed;
+      this.flipX += this.flipSpeed;
+      this.opacity -= this.decay;
+    }
+
+    draw() {
+      if (!celCtx || this.opacity <= 0) return;
+      celCtx.save();
+      celCtx.translate(this.x, this.y);
+      celCtx.rotate(this.rotation);
+      celCtx.scale(Math.cos(this.flipX), 1);
+      celCtx.globalAlpha = Math.max(0, this.opacity);
+      celCtx.fillStyle = this.color;
+
+      if (this.type === 'petal') {
+        celCtx.shadowBlur = 10;
+        celCtx.shadowColor = this.color;
+        celCtx.beginPath();
+        celCtx.moveTo(0, -this.size);
+        celCtx.bezierCurveTo(this.size * 0.9, -this.size * 0.6, this.size * 1.1, this.size * 0.6, 0, this.size);
+        celCtx.bezierCurveTo(-this.size * 1.1, this.size * 0.6, -this.size * 0.9, -this.size * 0.6, 0, -this.size);
+        celCtx.fill();
+      } else if (this.type === 'foil') {
+        celCtx.shadowBlur = 8;
+        celCtx.shadowColor = '#ffd700';
+        celCtx.fillRect(-this.size * 0.5, -this.size * 0.3, this.size, this.size * 0.6);
+      } else if (this.type === 'sparkle') {
+        celCtx.shadowBlur = 12;
+        celCtx.shadowColor = '#ffffff';
+        celCtx.beginPath();
+        for (let i = 0; i < 4; i++) {
+          celCtx.lineTo(Math.cos((i * Math.PI) / 2) * this.size, Math.sin((i * Math.PI) / 2) * this.size);
+          celCtx.lineTo(Math.cos(((i + 0.5) * Math.PI) / 2) * (this.size * 0.3), Math.sin(((i + 0.5) * Math.PI) / 2) * (this.size * 0.3));
+        }
+        celCtx.closePath();
+        celCtx.fill();
+      } else { // bokeh
+        celCtx.shadowBlur = 16;
+        celCtx.shadowColor = 'rgba(255, 215, 0, 0.6)';
+        celCtx.beginPath();
+        celCtx.arc(0, 0, this.size * 0.9, 0, Math.PI * 2);
+        celCtx.fill();
+      }
+      celCtx.restore();
+    }
+  }
+
+  function triggerCelebration() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!celCanvas || !celCtx) return;
+
+    // Spawn 85 - 110 burst particles
+    const burstCount = 95;
+    for (let i = 0; i < burstCount; i++) {
+      celParticles.push(new CelebrationParticle());
+    }
+
+    isEmittingCelebration = true;
+
+    if (celEmitTimeout) clearTimeout(celEmitTimeout);
+    celEmitTimeout = setTimeout(() => {
+      isEmittingCelebration = false;
+    }, 3800);
+
+    function celRenderLoop() {
+      celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
+
+      for (let i = celParticles.length - 1; i >= 0; i--) {
+        const p = celParticles[i];
+        p.update();
+        p.draw();
+        if (p.opacity <= 0 || p.y > celCanvas.height + 50) {
+          celParticles.splice(i, 1);
+        }
+      }
+
+      if (celParticles.length > 0 || isEmittingCelebration) {
+        celAnimFrame = requestAnimationFrame(celRenderLoop);
+      } else {
+        if (celAnimFrame) cancelAnimationFrame(celAnimFrame);
+        celAnimFrame = null;
+        celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
+      }
+    }
+
+    if (!celAnimFrame) {
+      celRenderLoop();
     }
   }
 
@@ -879,7 +1131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       secretBookUnlocked = true;
       bookSpineSecret.classList.remove('locked');
       bookSpineSecret.querySelector('.spine-title').innerText = "THE SECRET 18TH CHAPTER 👑";
-      triggerConfetti();
+      triggerCelebration();
       playFanfareSound();
       debouncedSaveStateToHash();
     }
@@ -1385,7 +1637,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         if (quizScore === quizQuestions.length) {
           quizRewardModal.classList.add('active');
-          triggerConfetti();
+          triggerCelebration();
           unlockBadge('badge4');
           unlockSecretBook();
         } else {
@@ -1429,7 +1681,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const randomIndex = Math.floor(Math.random() * fortunes.length);
       fortuneResult.innerHTML = fortunes[randomIndex];
       spinFortuneBtn.disabled = false;
-      triggerConfetti();
+      triggerCelebration();
       playFanfareSound();
     }, 1200);
   });
@@ -1488,7 +1740,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (keySequence.includes('18') || keySequence.includes('700')) {
       keySequence = '';
       easterEggModal.classList.add('active');
-      triggerConfetti();
+      triggerCelebration();
       playFanfareSound();
       unlockBadge('badge6');
       unlockSecretBook();
@@ -1525,7 +1777,7 @@ document.addEventListener('DOMContentLoaded', () => {
   unboxGiftBtn.addEventListener('click', () => {
     playFanfareSound();
     giftModal.classList.add('active');
-    triggerConfetti();
+    triggerCelebration();
   });
   closeGiftBtn.addEventListener('click', () => {
     playPopSound();
@@ -1546,7 +1798,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   window.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-overlay')) {
+    if (e.target.classList.contains('modal-overlay') && e.target.id !== 'secretVaultModal') {
       e.target.classList.remove('active');
       setSpatialMuffle(false);
     }
@@ -1569,6 +1821,575 @@ document.addEventListener('DOMContentLoaded', () => {
         window.open(gptUrl, '_blank');
       });
     });
+  });
+
+  // --------------------------------------------------------------------------
+  // 20. GIRLFRIEND'S DAY SECRET VAULT ENGINE & CANVAS PROCEDURAL SYSTEM
+  // --------------------------------------------------------------------------
+  const secretVaultBtn = document.getElementById('secretVaultBtn');
+  const secretVaultModal = document.getElementById('secretVaultModal');
+  const closeVaultBtn = document.getElementById('closeVaultBtn');
+  const vaultGateScreen = document.getElementById('vaultGateScreen');
+  const waxSealBox = document.getElementById('waxSealBox');
+  const vaultMainContent = document.getElementById('vaultMainContent');
+  const envelopeCard = document.getElementById('envelopeCard');
+  const envelopeFlap = document.getElementById('envelopeFlap');
+  const vaultLoveLetterBox = document.getElementById('vaultLoveLetterBox');
+  const petalCounterBadge = document.getElementById('petalCounterBadge');
+  const petalCountText = document.getElementById('petalCountText');
+  const shadeMauveRoseBtn = document.getElementById('shadeMauveRoseBtn');
+  const shadeMauveBerryBtn = document.getElementById('shadeMauveBerryBtn');
+  const shadeRoyalCrimsonBtn = document.getElementById('shadeRoyalCrimsonBtn');
+
+  const vaultPetalCanvas = document.getElementById('vaultPetalCanvas');
+  const vaultRoseCanvas = document.getElementById('vaultRoseCanvas');
+
+  let petalCtx = vaultPetalCanvas ? vaultPetalCanvas.getContext('2d') : null;
+  let roseCtx = vaultRoseCanvas ? vaultRoseCanvas.getContext('2d') : null;
+
+  let petalsArray = [];
+  let petalAnimationId = null;
+  let petalsCaught = 0;
+
+  // Web Audio Synthesizers for Secret Vault
+  function playWaxCrackleSound() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const bufferSize = ctx.sampleRate * 0.3;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.05));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 1200;
+      noise.connect(filter);
+      filter.connect(ctx.destination);
+      noise.start();
+    } catch (e) {}
+  }
+
+  function playRoseBloomSound() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const freqs = [523.25, 659.25, 783.99, 987.77, 1046.50];
+      freqs.forEach((f, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = f;
+        gain.gain.setValueAtTime(0.08, ctx.currentTime + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.08 + 0.6);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + idx * 0.08);
+        osc.stop(ctx.currentTime + idx * 0.08 + 0.6);
+      });
+    } catch (e) {}
+  }
+
+  // Drifting Petals Canvas Physics
+  function initVaultPetals() {
+    if (!vaultPetalCanvas) return;
+    vaultPetalCanvas.width = window.innerWidth;
+    vaultPetalCanvas.height = window.innerHeight;
+
+    petalsArray = [];
+    const colors = ['rgba(245, 215, 150, 0.75)', 'rgba(255, 117, 160, 0.75)', 'rgba(168, 28, 56, 0.75)', 'rgba(124, 62, 89, 0.75)'];
+    const count = window.innerWidth < 768 ? 18 : 40;
+
+    for (let i = 0; i < count; i++) {
+      petalsArray.push({
+        x: Math.random() * vaultPetalCanvas.width,
+        y: Math.random() * vaultPetalCanvas.height,
+        size: Math.random() * 8 + 6,
+        speedY: Math.random() * 1.4 + 0.7,
+        speedX: Math.random() * 0.8 - 0.4,
+        rotation: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 1.8,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+  }
+
+  function renderVaultPetals() {
+    if (!petalCtx || !vaultPetalCanvas) return;
+    petalCtx.clearRect(0, 0, vaultPetalCanvas.width, vaultPetalCanvas.height);
+
+    petalsArray.forEach(p => {
+      p.y += p.speedY;
+      p.x += Math.sin(p.y * 0.01) + p.speedX;
+      p.rotation += p.rotSpeed;
+
+      if (p.y > vaultPetalCanvas.height + 20) {
+        p.y = -20;
+        p.x = Math.random() * vaultPetalCanvas.width;
+      }
+
+      petalCtx.save();
+      petalCtx.translate(p.x, p.y);
+      petalCtx.rotate((p.rotation * Math.PI) / 180);
+      petalCtx.fillStyle = p.color;
+      petalCtx.beginPath();
+      petalCtx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2);
+      petalCtx.fill();
+      petalCtx.restore();
+    });
+
+    petalAnimationId = requestAnimationFrame(renderVaultPetals);
+  }
+
+  // Procedural Blooming Rose Animation System
+  function drawSingleRose(ctx, centerX, centerY, scale, progress) {
+    // Stem & Leaves
+    ctx.strokeStyle = `rgba(74, 154, 98, ${Math.min(0.9, progress)})`;
+    ctx.lineWidth = 3.5 * scale;
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY + 100 * scale);
+    ctx.quadraticCurveTo(centerX - 15 * scale, centerY + 50 * scale, centerX, centerY);
+    ctx.stroke();
+
+    if (progress > 0.2) {
+      ctx.fillStyle = 'rgba(74, 154, 98, 0.75)';
+      ctx.beginPath();
+      ctx.ellipse(centerX - 18 * scale, centerY + 50 * scale, 18 * scale * progress, 8 * scale * progress, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.ellipse(centerX + 18 * scale, centerY + 70 * scale, 18 * scale * progress, 8 * scale * progress, Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Spiraling Petals
+    const totalPetals = 22;
+    for (let i = 0; i < totalPetals; i++) {
+      const petalProgress = Math.max(0, Math.min(1, (progress * 1.5) - (i * 0.03)));
+      if (petalProgress <= 0) continue;
+
+      const angle = (i * 137.5 * Math.PI) / 180;
+      const dist = Math.sqrt(i) * 12 * scale * petalProgress;
+      const px = centerX + Math.cos(angle) * dist;
+      const py = centerY + Math.sin(angle) * dist;
+      const petalSize = (14 + i * 1.2) * scale * petalProgress;
+
+      const grad = ctx.createRadialGradient(px, py, 2, px, py, petalSize);
+      if (i % 3 === 0) {
+        grad.addColorStop(0, 'rgba(255, 215, 150, 0.95)');
+        grad.addColorStop(1, 'rgba(220, 20, 60, 0.85)');
+      } else if (i % 2 === 0) {
+        grad.addColorStop(0, 'rgba(255, 105, 180, 0.95)');
+        grad.addColorStop(1, 'rgba(168, 28, 56, 0.9)');
+      } else {
+        grad.addColorStop(0, 'rgba(168, 28, 56, 0.95)');
+        grad.addColorStop(1, 'rgba(74, 14, 35, 0.9)');
+      }
+
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(angle + progress);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, petalSize, petalSize * 0.65, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function renderBloomingRoses() {
+    if (!roseCtx || !vaultRoseCanvas) return;
+    vaultRoseCanvas.width = window.innerWidth;
+    vaultRoseCanvas.height = window.innerHeight;
+
+    const width = vaultRoseCanvas.width;
+    const height = vaultRoseCanvas.height;
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 0.04;
+      roseCtx.clearRect(0, 0, width, height);
+
+      // Draw single central unsealing rose bloom behind wax stamp
+      drawSingleRose(roseCtx, centerX, centerY - 20, 1.1, progress);
+
+      // Floating glowing stardust spores
+      for (let j = 0; j < 30; j++) {
+        const sporeAngle = j * 12 + progress * 2;
+        const sporeDist = 35 + j * 10 * progress;
+        const sx = centerX + Math.cos(sporeAngle) * sporeDist;
+        const sy = centerY + Math.sin(sporeAngle) * sporeDist;
+
+        roseCtx.fillStyle = `rgba(245, 215, 150, ${Math.max(0, 0.85 - (j * 0.025))})`;
+        roseCtx.beginPath();
+        roseCtx.arc(sx, sy, 2.5 + Math.sin(progress * 5 + j) * 1.5, 0, Math.PI * 2);
+        roseCtx.fill();
+      }
+
+      if (progress >= 1.4) {
+        clearInterval(interval);
+        setTimeout(() => {
+          let alpha = 1;
+          const fadeOutInterval = setInterval(() => {
+            alpha -= 0.06;
+            if (alpha <= 0) {
+              clearInterval(fadeOutInterval);
+              roseCtx.clearRect(0, 0, width, height);
+            } else {
+              roseCtx.clearRect(0, 0, width, height);
+              roseCtx.save();
+              roseCtx.globalAlpha = alpha;
+              drawSingleRose(roseCtx, centerX, centerY - 20, 1.1, 1.4);
+              roseCtx.restore();
+            }
+          }, 30);
+        }, 800);
+      }
+    }, 30);
+  }
+
+  // Typewriter Audio & Safety Net System
+  let typewriterAudioCtx = null;
+  let typewriterOsc = null;
+  let typewriterGain = null;
+  let typewriterTimer = null;
+  let isTypewriterRunning = false;
+
+  const fullLetterHTML = `
+    <div class="letter-parchment">
+      <div class="letter-top-seal">✦ GIRLFRIEND'S DAY SPECIAL ✦</div>
+      <h3 class="letter-salutation">accha 🙂</h3>
+      <div class="letter-text-body">
+        <p>happy girlfriend's day to my favorite 700-year-old skeleton princess, Wattpad dark romance queen, and men-hater club executive president 👑🌹</p>
+        <p>ik you're probably sitting in Bangladesh right now, drinking your 4th cup of black coffee, stressing over A-Levels Physics and complaining ki mom ne phir se chappal se maara... but take a pause for a second, mohtarma.</p>
+        <p>you once asked me if you'd ever hate hearing me say <em>"i love the mess you are."</em> the answer is still no. no matter how dramatic you get, how many late nights you stay up reading smut, or how much you claim your soul died in 1324 AD... y r my favorite mess, and I'm all yours.</p>
+        <p>from analyzing whether your lipstick is deep mauve berry or mauve rose (and me demanding hex codes like a nerd 🤦‍♂️), to listening to your cute voice notes when you get insecure about your accent... you really think you're Watson to my Sherlock, but honestly? you're just my pretty princess.</p>
+        <p>and yes, under all my sarcastic roasts about Rotational Motion and hostel mess bananas... I still wanna die in the arms of my to-be wife. (ab zyaada sharmaao mat, le nikal gaya sach 😏)</p>
+        <p>happy girlfriend's day, babu. stay cute, don't break your sleep schedule today, and remember — zero refund policy, you're permanently stuck with me 🖤</p>
+      </div>
+      <div class="letter-signature-block">
+        <p>— yours, Vedant (Knight of the Little Princess) 🛡️✨</p>
+      </div>
+    </div>
+  `;
+
+  function startTypewriterAudioLoop() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      typewriterAudioCtx = new AudioCtx();
+      typewriterOsc = typewriterAudioCtx.createOscillator();
+      typewriterGain = typewriterAudioCtx.createGain();
+
+      typewriterOsc.type = 'triangle';
+      typewriterOsc.frequency.setValueAtTime(140, typewriterAudioCtx.currentTime);
+      typewriterGain.gain.setValueAtTime(0.03, typewriterAudioCtx.currentTime);
+
+      typewriterOsc.connect(typewriterGain);
+      typewriterGain.connect(typewriterAudioCtx.destination);
+      typewriterOsc.start();
+    } catch (e) {}
+  }
+
+  function stopTypewriterAudioLoop() {
+    try {
+      if (typewriterGain && typewriterAudioCtx) {
+        typewriterGain.gain.setTargetAtTime(0, typewriterAudioCtx.currentTime, 0.08);
+        setTimeout(() => {
+          if (typewriterOsc) {
+            typewriterOsc.stop();
+            typewriterOsc.disconnect();
+          }
+          if (typewriterAudioCtx) typewriterAudioCtx.close();
+          typewriterAudioCtx = null;
+          typewriterOsc = null;
+          typewriterGain = null;
+        }, 120);
+      }
+    } catch (e) {}
+  }
+
+  function startTypewriterLoveLetter() {
+    if (!vaultLoveLetterBox) return;
+    vaultLoveLetterBox.style.display = 'block';
+    vaultLoveLetterBox.innerHTML = fullLetterHTML;
+    
+    const textContainer = vaultLoveLetterBox.querySelector('.letter-text-body');
+    if (!textContainer) return;
+
+    const originalText = textContainer.innerHTML;
+    textContainer.innerHTML = '<span id="typewriterText"></span><span class="typewriter-cursor">|</span>';
+    const textSpan = textContainer.querySelector('#typewriterText');
+
+    let i = 0;
+    isTypewriterRunning = true;
+    startTypewriterAudioLoop();
+
+    typewriterTimer = setInterval(() => {
+      if (i < originalText.length) {
+        textSpan.innerHTML = originalText.substring(0, i + 1);
+        i++;
+      } else {
+        skipTypewriter();
+      }
+    }, 28);
+  }
+
+  function skipTypewriter() {
+    if (!isTypewriterRunning) return;
+    if (typewriterTimer) clearInterval(typewriterTimer);
+    isTypewriterRunning = false;
+    stopTypewriterAudioLoop();
+
+    if (vaultLoveLetterBox) {
+      vaultLoveLetterBox.innerHTML = fullLetterHTML;
+    }
+  }
+
+  if (vaultLoveLetterBox) {
+    vaultLoveLetterBox.addEventListener('click', skipTypewriter);
+  }
+
+  // Open Vault Modal
+  function openSecretVault() {
+    playBookSound();
+    secretVaultModal.classList.add('active');
+    
+    // Reset gate screen state
+    if (vaultGateScreen) {
+      vaultGateScreen.style.display = 'block';
+      vaultGateScreen.classList.remove('not-loaded');
+    }
+    if (vaultMainContent) vaultMainContent.style.display = 'none';
+    if (waxSealBox) {
+      waxSealBox.style.transform = 'scale(1)';
+      waxSealBox.style.opacity = '1';
+    }
+
+    initVaultPetals();
+    if (petalAnimationId) cancelAnimationFrame(petalAnimationId);
+    renderVaultPetals();
+    renderBloomingRoses();
+
+    showToast("🌹 Girlfriend's Day Secret Vault unlocked!", "gold", "🗝️");
+  }
+
+  function closeSecretVault() {
+    playPopSound();
+    secretVaultModal.classList.remove('active');
+    if (petalAnimationId) cancelAnimationFrame(petalAnimationId);
+  }
+
+  if (secretVaultBtn) secretVaultBtn.addEventListener('click', openSecretVault);
+  if (closeVaultBtn) closeVaultBtn.addEventListener('click', closeSecretVault);
+
+  // Wax Seal Gate Unlock
+  if (waxSealBox) {
+    waxSealBox.addEventListener('click', () => {
+      playWaxCrackleSound();
+      playRoseBloomSound();
+      renderBloomingRoses();
+
+      waxSealBox.style.transform = 'scale(1.15) rotate(5deg)';
+      waxSealBox.style.opacity = '0.7';
+
+      setTimeout(() => {
+        vaultGateScreen.style.display = 'none';
+        vaultMainContent.style.display = 'block';
+        vaultMainContent.style.animation = 'fadeInVault 0.8s ease forwards';
+        triggerCelebration();
+      }, 600);
+    });
+  }
+
+  // Envelope & Love Letter Unfold
+  if (envelopeCard) {
+    envelopeCard.addEventListener('click', () => {
+      playBookSound();
+      envelopeFlap.style.transform = 'rotateX(180deg)';
+      setTimeout(() => {
+        envelopeCard.style.display = 'none';
+        startTypewriterLoveLetter();
+        showToast("💌 Original Love Letter Unfolding!", "gold", "🌹");
+      }, 500);
+    });
+  }
+
+  // Interactive 3D Velvet Ring Box Toggle
+  window.toggleRingBoxLid = function() {
+    playPopSound();
+    const ringBox = document.getElementById('proposalRingBox');
+    if (ringBox) {
+      ringBox.classList.toggle('open');
+      if (ringBox.classList.contains('open')) {
+        playRoseBloomSound();
+        showToast("💎 3D Velvet Ring Box Opened! Pure 24K Diamond Revealed!", "gold", "👑");
+      }
+    }
+  };
+
+  // Proposal YES Button Handler & Certificate of Eternity Reveal
+  window.handleProposalYes = function(e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const ctx = new AudioCtx();
+        ctx.resume();
+      }
+    } catch (err) {}
+
+    playRoseBloomSound();
+    playBookSound();
+
+    const ringBox = document.getElementById('proposalRingBox');
+    if (ringBox) {
+      ringBox.classList.add('open');
+      ringBox.style.transform = 'scale(1.2) rotate(360deg)';
+      ringBox.style.boxShadow = '0 0 50px rgba(245, 215, 150, 0.9)';
+    }
+
+    const cert = document.getElementById('eternityCertificate');
+    if (cert) {
+      cert.style.display = 'block';
+    }
+
+    const btnText = document.getElementById('proposalBtnText');
+    if (btnText) {
+      btnText.innerText = 'FOREVER YOURS 💖👑 (ACCEPTED!)';
+    }
+
+    // Always trigger built-in HTML5 canvas fireworks celebration
+    triggerCelebration();
+    setTimeout(triggerCelebration, 400);
+    setTimeout(triggerCelebration, 800);
+
+    // Also trigger CDN confetti if available
+    if (typeof confetti === 'function') {
+      try {
+        confetti({
+          particleCount: 160,
+          spread: 100,
+          origin: { y: 0.6 },
+          colors: ['#f5d796', '#c41e3a', '#ff75a0', '#ffffff', '#7c3e59']
+        });
+
+        setTimeout(() => {
+          confetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 60,
+            origin: { x: 0 },
+            colors: ['#f5d796', '#c41e3a', '#ff75a0']
+          });
+          confetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 60,
+            origin: { x: 1 },
+            colors: ['#f5d796', '#c41e3a', '#ff75a0']
+          });
+        }, 300);
+      } catch (err) {}
+    }
+
+    showToast("💍 SHE SAID YES! 700-Year Certificate of Eternity Issued!", "gold", "👑");
+  };
+
+  const proposalYesBtn = document.getElementById('proposalYesBtn');
+  if (proposalYesBtn) {
+    proposalYesBtn.addEventListener('click', window.handleProposalYes);
+  }
+
+  // Interactive Timeline Quote Highlighting
+  document.querySelectorAll('.timeline-bubble').forEach(bubble => {
+    bubble.addEventListener('click', () => {
+      playPopSound();
+      bubble.classList.toggle('highlighted');
+      const quoteText = bubble.innerText.replace(/"/g, '');
+      showToast(`💬 Highlighted quote: "${quoteText.substring(0, 35)}..."`, 'gold', '✨');
+    });
+  });
+
+  // Mauve Shade Selector Interactive Easter Egg
+  function setMauveShade(colorHex, name) {
+    playPopSound();
+    document.querySelectorAll('.shade-btn').forEach(btn => btn.classList.remove('active'));
+    if (name === 'Mauve Rose') shadeMauveRoseBtn.classList.add('active');
+    if (name === 'Deep Mauve Berry') shadeMauveBerryBtn.classList.add('active');
+    if (name === 'Royal Crimson') shadeRoyalCrimsonBtn.classList.add('active');
+
+    secretVaultModal.style.boxShadow = `inset 0 0 60px ${colorHex}`;
+    showToast(`💄 Switched ambient aura to ${name} (${colorHex})!`, 'gold', '✨');
+  }
+
+  if (shadeMauveRoseBtn) shadeMauveRoseBtn.addEventListener('click', () => setMauveShade('#7C3E59', 'Mauve Rose'));
+  if (shadeMauveBerryBtn) shadeMauveBerryBtn.addEventListener('click', () => setMauveShade('#521E36', 'Deep Mauve Berry'));
+  if (shadeRoyalCrimsonBtn) shadeRoyalCrimsonBtn.addEventListener('click', () => setMauveShade('#9E1B32', 'Royal Crimson'));
+
+  // Catch Floating Petals Interaction (Badge Click + Canvas Hit Testing)
+  function catchPetalSuccess() {
+    petalsCaught++;
+    if (petalCountText) petalCountText.innerText = `${petalsCaught} Petal${petalsCaught === 1 ? '' : 's'} Caught`;
+    playPopSound();
+    showToast(`🌸 Caught a Rose Petal! (${petalsCaught}/5)`, "gold", "✨");
+    if (petalsCaught === 5) {
+      showToast("🌸 Caught 5 Rose Petals! Unlocked Secret 700-Yr Vow!", "gold", "👑");
+      triggerCelebration();
+    }
+  }
+
+  if (petalCounterBadge) {
+    petalCounterBadge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      catchPetalSuccess();
+    });
+  }
+
+  if (secretVaultModal) {
+    secretVaultModal.addEventListener('click', (e) => {
+      // Don't intercept clicks on interactive buttons, proposal card, or envelope
+      if (e.target.closest('button') || e.target.closest('.proposal-card-container') || e.target.closest('.envelope-3d-card') || e.target.closest('.vault-love-letter-box')) {
+        return;
+      }
+
+      if (!petalsArray || petalsArray.length === 0) return;
+      const clickX = e.clientX;
+      const clickY = e.clientY;
+
+      for (let i = 0; i < petalsArray.length; i++) {
+        const p = petalsArray[i];
+        const dist = Math.hypot(clickX - p.x, clickY - p.y);
+        if (dist < 60) {
+          p.y = -20;
+          p.x = Math.random() * (vaultPetalCanvas ? vaultPetalCanvas.width : window.innerWidth);
+          catchPetalSuccess();
+          break;
+        }
+      }
+    });
+  }
+
+  // Keyboard Shortcut 'G' or 'g' to Toggle Vault
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === 'g' || e.key === 'G') && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+      if (secretVaultModal.classList.contains('active')) {
+        closeSecretVault();
+      } else {
+        openSecretVault();
+      }
+    }
   });
 
   // Initialize State from URL Hash or localStorage

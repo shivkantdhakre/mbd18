@@ -19,17 +19,25 @@
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Canvas Confetti Library for Fireworks -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
   <!-- Background Animated Canvas -->
   <canvas id="canvas-bg"></canvas>
+  <canvas id="celebrationCanvas" class="celebration-canvas-layer"></canvas>
 
   <!-- Toast Notification Container -->
   <div id="toastContainer" class="toast-container"></div>
 
   <!-- Top Control Bar (Audio, Presets, Achievements) -->
   <div class="top-control-bar">
+    <button class="control-btn secret-vault-btn" id="secretVaultBtn" title="Girlfriend's Day Secret Vault 🌹">
+      <span class="rose-icon-display">🌹</span>
+      <span class="vault-pulse-dot"></span>
+    </button>
     <button class="control-btn" id="badgeToggleBtn" title="Collectible Achievements & Badges">
       <i class="fa-solid fa-award"></i>
       <span class="badge-count-pill" id="badgeCountPill">0</span>
@@ -748,8 +756,6 @@ Whether it's 1324 AD or 2026, you are still my favorite mess, and I'm all yours.
         <h3 class="letter-sender">To My Favorite 700-Yr Old Skeleton Princess 👑</h3>
       </div>
       <div class="letter-body" id="letterText">
-Accha 🙂
-
 Happy 18th Birthday to my favorite 17-year-old (well, officially 18 now!) dark-romance lover girl, menu-hater, and A-Levels survivor Mohima! 🥳✨
 
 700 saal purani aatma ho aap, toh 18 saal toh kuch bhi nhi hai aapke liye 🥱 Kabutar se letter bhejti thi 700 saal pehle, aur ab Instagram par full-day dark academia reels aur cat memes bhejti ho 😂
@@ -776,6 +782,491 @@ Happy Birthday my pretty princess! Make sure to take your beauty sleep today and
       </p>
       <div style="font-family: var(--font-handwriting); font-size: 2rem; color: var(--accent-rose);">
         Forever Yours, Vedant 💕
+      </div>
+    </div>
+  </div>
+
+  <!-- GIRLFRIEND'S DAY SECRET VAULT MODAL -->
+  <div class="modal-overlay secret-vault-overlay" id="secretVaultModal">
+    <!-- Background Drifting Petals Canvas Layer -->
+    <canvas id="vaultPetalCanvas" class="vault-canvas-layer"></canvas>
+
+    <!-- Foreground Procedural Rose Garden Blooming Canvas Layer -->
+    <canvas id="vaultRoseCanvas" class="vault-canvas-layer"></canvas>
+
+    <div class="vault-modal-wrapper">
+      <button class="close-modal-btn vault-close-btn" id="closeVaultBtn" title="Close Secret Vault">&times;</button>
+
+      <!-- PHASE 1: SECRET GATEWAY & WAX SEAL UNLOCK -->
+      <div class="vault-gate-screen" id="vaultGateScreen">
+        <!-- Pure CSS 3D Blossoming Flowers Garden Background -->
+        <div class="css-rose-garden-container">
+          <div class="night-sky-bg"></div>
+          <div class="flowers-garden">
+            <div class="flower flower--1">
+              <div class="flower__leafs flower__leafs--1">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+                <div class="flower__white-circle"></div>
+
+                <div class="flower__light flower__light--1"></div>
+                <div class="flower__light flower__light--2"></div>
+                <div class="flower__light flower__light--3"></div>
+                <div class="flower__light flower__light--4"></div>
+                <div class="flower__light flower__light--5"></div>
+                <div class="flower__light flower__light--6"></div>
+                <div class="flower__light flower__light--7"></div>
+                <div class="flower__light flower__light--8"></div>
+              </div>
+              <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--2"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+                <div class="flower__line__leaf flower__line__leaf--4"></div>
+                <div class="flower__line__leaf flower__line__leaf--5"></div>
+                <div class="flower__line__leaf flower__line__leaf--6"></div>
+              </div>
+            </div>
+
+            <div class="flower flower--2">
+              <div class="flower__leafs flower__leafs--2">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+                <div class="flower__white-circle"></div>
+
+                <div class="flower__light flower__light--1"></div>
+                <div class="flower__light flower__light--2"></div>
+                <div class="flower__light flower__light--3"></div>
+                <div class="flower__light flower__light--4"></div>
+                <div class="flower__light flower__light--5"></div>
+                <div class="flower__light flower__light--6"></div>
+                <div class="flower__light flower__light--7"></div>
+                <div class="flower__light flower__light--8"></div>
+              </div>
+              <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--2"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+                <div class="flower__line__leaf flower__line__leaf--4"></div>
+              </div>
+            </div>
+
+            <div class="flower flower--3">
+              <div class="flower__leafs flower__leafs--3">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+                <div class="flower__white-circle"></div>
+
+                <div class="flower__light flower__light--1"></div>
+                <div class="flower__light flower__light--2"></div>
+                <div class="flower__light flower__light--3"></div>
+                <div class="flower__light flower__light--4"></div>
+                <div class="flower__light flower__light--5"></div>
+                <div class="flower__light flower__light--6"></div>
+                <div class="flower__light flower__light--7"></div>
+                <div class="flower__light flower__light--8"></div>
+              </div>
+              <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--2"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+                <div class="flower__line__leaf flower__line__leaf--4"></div>
+              </div>
+            </div>
+
+            <div class="grow-ans" style="--d:1.2s">
+              <div class="flower__g-long">
+                <div class="flower__g-long__top"></div>
+                <div class="flower__g-long__bottom"></div>
+              </div>
+            </div>
+
+            <div class="growing-grass">
+              <div class="flower__grass flower__grass--1">
+                <div class="flower__grass--top"></div>
+                <div class="flower__grass--bottom"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+                <div class="flower__grass__overlay"></div>
+              </div>
+            </div>
+
+            <div class="growing-grass">
+              <div class="flower__grass flower__grass--2">
+                <div class="flower__grass--top"></div>
+                <div class="flower__grass--bottom"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+                <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+                <div class="flower__grass__overlay"></div>
+              </div>
+            </div>
+
+            <div class="grow-ans" style="--d:2.4s">
+              <div class="flower__g-right flower__g-right--1">
+                <div class="leaf"></div>
+              </div>
+            </div>
+
+            <div class="grow-ans" style="--d:2.8s">
+              <div class="flower__g-right flower__g-right--2">
+                <div class="leaf"></div>
+              </div>
+            </div>
+
+            <div class="grow-ans" style="--d:2.8s">
+              <div class="flower__g-front">
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--2"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--3"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--4"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--5"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--6"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--7"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--8"><div class="flower__g-front__leaf"></div></div>
+                <div class="flower__g-front__line"></div>
+              </div>
+            </div>
+
+            <div class="grow-ans" style="--d:3.2s">
+              <div class="flower__g-fr">
+                <div class="leaf"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--1"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--2"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--3"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--4"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--5"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--6"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--7"></div>
+                <div class="flower__g-fr__leaf flower__g-fr__leaf--8"></div>
+              </div>
+            </div>
+
+            <div class="long-g long-g--0">
+              <div class="grow-ans" style="--d:3s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:2.2s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:3.4s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div>
+            </div>
+
+            <div class="long-g long-g--1">
+              <div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:3.8s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:4s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--3"></div></div>
+            </div>
+
+            <div class="long-g long-g--2">
+              <div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:4.4s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:4.6s"><div class="leaf leaf--3"></div></div>
+            </div>
+
+            <div class="long-g long-g--3">
+              <div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:3s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div>
+            </div>
+
+            <div class="long-g long-g--4">
+              <div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:3s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div>
+            </div>
+
+            <div class="long-g long-g--5">
+              <div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:3s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div>
+            </div>
+
+            <div class="long-g long-g--6">
+              <div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:4.4s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:4.6s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:4.8s"><div class="leaf leaf--3"></div></div>
+            </div>
+
+            <div class="long-g long-g--7">
+              <div class="grow-ans" style="--d:3s"><div class="leaf leaf--0"></div></div>
+              <div class="grow-ans" style="--d:3.2s"><div class="leaf leaf--1"></div></div>
+              <div class="grow-ans" style="--d:3.5s"><div class="leaf leaf--2"></div></div>
+              <div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vault-gate-badge">
+          <span class="gate-tag"><i class="fa-solid fa-rose"></i> EXCLUSIVE GIRLFRIEND'S DAY VAULT</span>
+        </div>
+        <h2 class="vault-gate-title">To My Favorite Girl 🌹✨</h2>
+
+        <div class="vault-gate-action-container" id="vaultGateActionContainer">
+          <div class="wax-seal-interactive-box" id="waxSealBox" title="Click to open the Secret Vault!">
+            <div class="wax-seal-ring"></div>
+            <div class="wax-seal-core">
+              <span class="wax-icon">🌹</span>
+              <span class="wax-text">OPEN THE SECRET VAULT</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="vault-hint-text"><i class="fa-solid fa-wand-magic-sparkles"></i> Tip: Press 'G' on your keyboard anytime to toggle the Secret Vault</p>
+      </div>
+
+      <!-- PHASE 2: VAULT MAIN CONTENT (ENVELOPE, LETTER, TIMELINE, MAUVE TESTER) -->
+      <div class="vault-main-content" id="vaultMainContent" style="display: none;">
+        
+        <!-- TOP VAULT HEADER & PETAL COUNTER -->
+        <div class="vault-header-bar">
+          <div class="vault-title-group">
+            <span class="vault-mini-tag">🌹 GIRLFRIEND'S DAY EXCLUSIVE VAULT</span>
+            <h3 class="vault-header-heading">Mohima's Secret Archives 💖</h3>
+          </div>
+          <div class="petal-counter-badge" id="petalCounterBadge" title="Catch floating rose petals!">
+            <span class="petal-icon">🌸</span>
+            <span class="petal-count" id="petalCountText">0 Petals Caught</span>
+          </div>
+        </div>
+
+        <!-- 3D UNFOLDING ENVELOPE & LETTER CONTAINER -->
+        <div class="envelope-3d-wrapper" id="envelope3dWrapper">
+          <div class="envelope-3d-card" id="envelopeCard">
+            <div class="envelope-flap" id="envelopeFlap"></div>
+            <div class="envelope-wax-stamp" id="letterWaxStamp">
+              <span class="wax-stamp-icon">🌹</span>
+            </div>
+            <div class="envelope-body">
+              <div class="envelope-address">
+                <p class="to-text">TO: Mohima (700-Yr Old Skeleton Princess 👑)</p>
+                <p class="from-text">FROM: Vedant (All Fiction 🛡️)</p>
+                <span class="unfold-hint-text"><i class="fa-solid fa-hand-pointer"></i> Tap Envelope to Open Letter</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- UNFOLDED ORIGINAL LOVE LETTER -->
+          <div class="vault-love-letter-box" id="vaultLoveLetterBox" style="display: none;">
+            <div class="letter-parchment">
+              <div class="letter-top-seal">✦ GIRLFRIEND'S DAY SPECIAL ✦</div>
+              <h3 class="letter-salutation">Muuuuuuaaaaaaa😘 </h3>
+              <div class="letter-text-body">
+                <p>happy girlfriend's day to my favorite 700-year-old skeleton princess, Wattpad dark romance queen, and men-hater club executive president 👑🌹</p>
+
+                <p>ik you're probably sitting in Bangladesh right now, drinking your 4th cup of black coffee, stressing over A-Levels Physics and complaining ki mom ne phir se chappal se maara... but take a pause for a second, mohtarma.</p>
+
+                <p>you once asked me if you'd ever hate hearing me say <em>"i love the mess you are."</em> the answer is still no. no matter how dramatic you get, how many late nights you stay up reading smut, or how much you claim your soul died in 1324 AD... y r my favorite mess, and I'm all yours.</p>
+
+                <p>from analyzing whether your lipstick is deep mauve berry or mauve rose (and me demanding hex codes like a nerd 🤦‍♂️), to listening to your cute voice notes when you get insecure about your accent... you really think you're Watson to my Sherlock, but honestly? you're just my pretty princess.</p>
+
+                <p>and yes, under all my sarcastic roasts about Rotational Motion and hostel mess bananas... I still wanna die in the arms of my to-be wife. (ab zyaada sharmaao mat, le nikal gaya sach 😏)</p>
+
+                <p>happy girlfriend's day, babu. stay cute, don't break your sleep schedule today, and remember — zero refund policy, you're permanently stuck with me 🖤</p>
+              </div>
+              <div class="letter-signature-block">
+                <p>— yours, Vedant (Knight of the Little Princess) 🛡️✨</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAUVE LIPSTICK COLOR TESTER INTERACTIVE EASTER EGG -->
+        <div class="mauve-tester-card">
+          <div class="tester-header">
+            <h4><i class="fa-solid fa-palette" style="color: var(--accent-gold);"></i> Mohima's Mauve Shade Aura Selector 💄</h4>
+            <p>"Right one is deep mauve berry, left is mauve rose... hex code batao dono ka 🙎"</p>
+          </div>
+          <div class="shade-buttons-group">
+            <button class="shade-btn mauve-rose-btn active" id="shadeMauveRoseBtn" data-color="#7C3E59">
+              <span class="shade-swatch" style="background: #7C3E59;"></span>
+              <span>Mauve Rose (#7C3E59)</span>
+            </button>
+            <button class="shade-btn mauve-berry-btn" id="shadeMauveBerryBtn" data-color="#521E36">
+              <span class="shade-swatch" style="background: #521E36;"></span>
+              <span>Deep Mauve Berry (#521E36)</span>
+            </button>
+            <button class="shade-btn royal-crimson-btn" id="shadeRoyalCrimsonBtn" data-color="#9E1B32">
+              <span class="shade-swatch" style="background: #9E1B32;"></span>
+              <span>Royal Crimson (#9E1B32)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CURATED TIMELINE OF INTIMATE & SWEET MOMENTS -->
+        <div class="vault-timeline-section">
+          <div class="section-title-wrapper" style="margin-bottom: 25px;">
+            <p class="section-tag"><i class="fa-solid fa-heart-pulse"></i> UNFILTERED CHAT HIGHLIGHTS</p>
+            <h3 class="section-heading" style="color: var(--accent-gold);">Our Sweetest & Most Flirtatious Memories 💕</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Real messages extracted directly from our Instagram chat history</p>
+          </div>
+
+          <div class="timeline-cards-grid">
+            <!-- Chapter 1 -->
+            <div class="timeline-card">
+              <div class="chapter-badge">CHAPTER I • THE SPARK</div>
+              <h4>"Watson with Sherlock" 🕵️‍♂️</h4>
+              <div class="chat-bubble-group">
+                <div class="timeline-bubble mohima">
+                  "Jaan se maarde ga if I told u... bt yk genius ko bhi kabhi kabhi guide chahiye hota he. Like Watson with Sherlock 😌"
+                </div>
+                <div class="timeline-bubble vedant">
+                  "Good evening. Myself Vedant Singh. I am from India. 🙂😂"
+                </div>
+                <div class="timeline-bubble vedant">
+                  "Ur voice is cute and that accent is 🤌 Looks i am falling 🙃"
+                </div>
+              </div>
+              <p class="timeline-annotation">
+                — Vedant's note: Insecure rehti ho accent par, par tumhari Hindi voice note sunkar dimaag kharab ho jaata hai cuteness se 🤌
+              </p>
+            </div>
+
+            <!-- Chapter 2 -->
+            <div class="timeline-card highlight-card">
+              <div class="chapter-badge">CHAPTER II • UNCONDITIONAL LOVE</div>
+              <h4>"I Love The Mess You Are" 🖤</h4>
+              <div class="chat-bubble-group">
+                <div class="timeline-bubble vedant">
+                  "That's wht makes it more real and i love the mess y r, no matter how depressed y r, how angry y r, how much y hate me, i would still keep you..."
+                </div>
+                <div class="timeline-bubble mohima">
+                  "Am I going to hate those words one day? 😭🙃... Yess all mine yh... then where y will kiss me?"
+                </div>
+                <div class="timeline-bubble vedant">
+                  "Wherever y want, I'm all yours"
+                </div>
+              </div>
+              <p class="timeline-annotation">
+                — Vedant's note: No matter how much you claim your soul died 700 years ago, you're all mine, permanently booked! 🙈
+              </p>
+            </div>
+
+            <!-- Chapter 3 -->
+            <div class="timeline-card">
+              <div class="chapter-badge">CHAPTER III • DESI GLAM & LIPSTICKS</div>
+              <h4>"Hexadecimal Color Code" 💄</h4>
+              <div class="chat-bubble-group">
+                <div class="timeline-bubble mohima">
+                  "Right one is deep mauve berry, left is mauve rose... It's different shade of mauve 💅"
+                </div>
+                <div class="timeline-bubble vedant">
+                  "Hexadecimal color code batao dono ka 🙎"
+                </div>
+                <div class="timeline-bubble mohima">
+                  "Bathtub me marna he... pura ghar candle se decorate karke... kya aesthetic he 😌"
+                </div>
+              </div>
+              <p class="timeline-annotation">
+                — Vedant's note: Programmer brain vs. Dark Romance aesthetic queen! `#7C3E59` vs `#521E36` 😂
+              </p>
+            </div>
+
+            <!-- Chapter 4 -->
+            <div class="timeline-card">
+              <div class="chapter-badge">CHAPTER IV • THE 700-YEAR VOW</div>
+              <h4>"Arms of My To-Be Wife" 💍</h4>
+              <div class="chat-bubble-group">
+                <div class="timeline-bubble vedant">
+                  "I wanna die in the arms of my to be wife"
+                </div>
+                <div class="timeline-bubble mohima">
+                  "Ab jhut na kaho... le nikal gaya sach 😏"
+                </div>
+                <div class="timeline-bubble vedant">
+                  "U know one day me and the boys had a nightout in the jungle, cooked food at 3 am... but hostel room par bhi tumhari hi baat sochte hain 🥱"
+                </div>
+              </div>
+              <p class="timeline-annotation">
+                — Vedant's note: 3 AM jungle walks in engineering hostel vs 700-year-old skeleton princess... match made in heaven 🛡️✨
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRAND FINALE PROPOSAL SECTION -->
+        <section class="vault-proposal-section" id="vaultProposalSection">
+          <div class="proposal-card-container">
+            <div class="proposal-header-badge">
+              <span class="proposal-tag">👑 THE 700-YEAR VOW • FOREVER PROPOSAL 💍</span>
+            </div>
+
+            <!-- 3D SPARKLING VELVET RING BOX -->
+            <div class="proposal-ring-box-wrapper">
+              <div class="ring-box-3d" id="proposalRingBox" onclick="toggleRingBoxLid()" title="Click to open the 3D Velvet Ring Box!">
+                <div class="ring-box-lid-top"></div>
+                <div class="ring-box-cushion">
+                  <span class="diamond-ring-icon">💎</span>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="proposal-main-title">Will You Be Mine Forever, My Wifey? 🌹💍</h3>
+            
+            <div class="proposal-speech-card">
+              <p class="proposal-quote-line">
+                <em>"Arms of my to-be wife (ab zyaada sharmaao mat, le nikal gaya sach 😏)..."</em>
+              </p>
+              <p class="proposal-text-paragraph">
+                Mohima, I would burn down the world just to see you smile, my skeleton princess... aur phir aaram se baith kar black coffee piyenge aur aap apna suspense thriller padhna.
+              </p>
+              <p class="proposal-text-paragraph">
+                From analyzing Mauve Berry vs Mauve Rose lipstick hex codes (`#7C3E59` vs `#521E36`), to staying up all night teasing you about Wattpad dark romance novels — you are my favorite mess, and I am 100% all yours. Zero refund policy, permanent booking!
+              </p>
+              <p class="proposal-question-highlight">
+                Will you marry me, make me the happiest guy in the universe, and be my wifey forever? 💖👑
+              </p>
+            </div>
+
+            <div class="proposal-actions">
+              <button class="proposal-yes-btn" id="proposalYesBtn" onclick="handleProposalYes(event)">
+                <span class="btn-text" id="proposalBtnText">YES, FOREVER! 💖💍</span>
+                <span class="btn-sparkle-glow">✨</span>
+              </button>
+            </div>
+
+            <!-- 700-YEAR PERMANENT CERTIFICATE OF ETERNITY -->
+            <div class="eternity-certificate" id="eternityCertificate" style="display: none;">
+              <div class="cert-border-inner">
+                <div class="cert-header">✦ OFFICIAL CERTIFICATE OF ETERNITY ✦</div>
+                <h3 class="cert-title">Permanent Vow of 700 Years 👑🌹</h3>
+                <p class="cert-body">
+                  This certifies that <strong>Mohima (700-Yr Old Skeleton Princess)</strong> has officially accepted <strong>Vedant (All Fiction 🛡️)</strong> to be hers forever — with zero refund policy, endless black coffee refills, and permanent booking into eternity!
+                </p>
+                <div class="cert-footer-row">
+                  <div class="cert-seal">🌹 OFFICIAL SEAL 2026</div>
+                  <div class="cert-date">Date: August 1, 2026</div>
+                  <div class="cert-sig">Vedant ❤️ Mohima</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="proposal-sub-footnote">
+              <i class="fa-solid fa-infinity" style="color: var(--accent-rose);"></i> Vedant ❤️ Mohima — Locked into Eternity
+            </p>
+          </div>
+        </section>
+
       </div>
     </div>
   </div>
